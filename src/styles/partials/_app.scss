@@ -1,9 +1,12 @@
+@use 'colors';
 @use 'variables';
 
 
 
 
-
+a{
+    color: colors.$primary;
+}
 .center-row {
     display: flex;
     justify-content: center;
@@ -14,4 +17,8 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
+}
+
+.dark-grey{
+    color: colors.$dark-grey;
 }
