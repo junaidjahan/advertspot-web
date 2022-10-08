@@ -26,7 +26,7 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-export function ReviewCard() {
+export function IntroCard() {
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
