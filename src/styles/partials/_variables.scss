@@ -1,3 +1,6 @@
+@import './colors';
 
-
-
+$big-shadow: 0px 5px 30px 10px $shadow;
+$normal-shadow: 0px 5px 10px 2px $shadow;
+$light-shadow: 0px 0px 8px 1px $shadow;
+$app-shadow: 0px 0px 20px 5px $grey-shadow;

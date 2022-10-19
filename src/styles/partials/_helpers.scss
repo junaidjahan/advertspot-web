@@ -1,0 +1,20 @@
+@import 'variables';
+
+.big-shadow {
+  box-shadow: $big-shadow !important;
+}
+
+.shadow {
+  box-shadow: $normal-shadow !important;
+}
+.light-shadow {
+  box-shadow: $light-shadow !important;
+}
+
+.app-shadow {
+  box-shadow: $app-shadow !important;
+}
+
+.height-100x {
+  height: 100%;
+}

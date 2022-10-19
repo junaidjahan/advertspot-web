@@ -1,24 +1,64 @@
 @use 'colors';
-@use 'variables';
 
-
-
-
-a{
-    color: colors.$primary;
+a {
+  color: colors.$primary;
 }
 .center-row {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .center-column {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
-.dark-grey{
-    color: colors.$dark-grey;
+.dark-grey {
+  color: colors.$dark-grey;
+}
+
+$i: 0;
+@while $i<= 6 {
+  h#{$i} {
+    margin: 0;
+  }
+  $i: $i + 1;
+}
+
+.d-flex {
+  display: flex;
+}
+
+@each $align in ('space-between', 'center', 'space-around') {
+  .justify-#{$align} {
+    justify-content: #{$align};
+  }
+}
+
+@each $mr, $ps in ('t': 'top', 'b': 'bottom', 'r': 'right', 'l': 'left') {
+  $mar: 0;
+  @while $mar<=100 {
+    .m#{$mr}-#{$mar} {
+      margin-#{$ps}: $mar * 1px !important;
+    }
+
+    $mar: $mar + 1;
+  }
+}
+
+@each $pa, $ps in ('t': 'top', 'b': 'bottom', 'r': 'right', 'l': 'left') {
+  $pad: 0;
+  @while $pad<=100 {
+    .p#{$pa}-#{$pad} {
+      padding-#{$ps}: $pad * 1px !important;
+    }
+
+    $pad: $pad + 1;
+  }
+}
+
+p {
+  margin: 0px;
 }
