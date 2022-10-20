@@ -1,17 +1,19 @@
 import { Box, Grid } from '@mui/material';
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth } from '~/hooks';
-import { BaseButton, BaseTextField } from '../../../components/base';
+import { BaseButton, BaseForm, BaseTextField } from '~/components';
+import { useAuth, useForm } from '~/hooks';
+import { loginSchema } from '~/schemas';
 
 export const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const form = useForm({ schema: loginSchema });
+  const {
+    formState: { isValid, isSubmitting }
+  } = form;
 
   const { login } = useAuth();
 
-  const handleLogin = async () => {
-    await login({ email, password });
+  const handleSubmit = async values => {
+    await login(values);
   };
 
   return (
@@ -24,37 +26,31 @@ export const Login = () => {
         </Box>
         <Grid container justifyContent='center' alignItems='center'>
           <Grid item xs={12} md={6}>
-            <Box sx={style.textField}>
-              <BaseTextField
-                fullWidth
-                label='Email'
-                value={email}
-                onChange={e => {
-                  setEmail(e.target.value);
-                }}
-              />
-            </Box>
-            <Box>
-              <BaseTextField
-                fullWidth
-                label='Password'
-                type='password'
-                value={password}
-                onChange={e => {
-                  setPassword(e.target.value);
-                }}
-              />
-            </Box>
-            <Box sx={style.button}>
-              <BaseButton variant='contained' fullWidth={true} size='small' onClick={handleLogin}>
-                Login
-              </BaseButton>
-            </Box>
-            <Box sx={style.anchorContainer}>
-              <p>
-                Don't have an Account? <Link to='/auth/signup'>Sign Up</Link>
-              </p>
-            </Box>
+            <BaseForm form={form} onSubmit={handleSubmit}>
+              <Box sx={style.textField}>
+                <BaseTextField fullWidth label='Email' name='email' type='email' autoFocus />
+              </Box>
+              <Box>
+                <BaseTextField fullWidth label='Password' name='password' type='password' />
+              </Box>
+              <Box sx={style.button}>
+                <BaseButton
+                  variant='contained'
+                  fullWidth
+                  disabled={!isValid}
+                  loading={isSubmitting}
+                  size='small'
+                  type='submit'
+                >
+                  Login
+                </BaseButton>
+              </Box>
+              <Box sx={style.anchorContainer}>
+                <p>
+                  Don't have an Account? <Link to='/auth/signup'>Sign Up</Link>
+                </p>
+              </Box>
+            </BaseForm>
           </Grid>
         </Grid>
       </Box>
