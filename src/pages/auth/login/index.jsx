@@ -61,16 +61,16 @@ export const Login = () => {
 const style = {
   container: {
     padding: '10px',
-
+    py: 5,
     px: '40px',
-    pt: '20px',
     height: '100%'
   },
   loginForm: {
     border: '1px solid',
     borderColor: 'grey.light',
     borderRadius: '10px',
-    px: '10px'
+    px: '10px',
+    py: 4
   },
   formCenter: {
     width: '50%',

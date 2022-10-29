@@ -1,8 +1,20 @@
-import { Box, Grid } from '@mui/material';
+import { Box, FormControl, Grid, InputLabel, MenuItem, Select } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { BaseButton, BaseTextField } from '../../../components/base';
+import { useAuth, useForm } from '~/hooks';
+import { loginSchema, signupSchema } from '~/schemas';
+import { BaseButton, BaseForm, BaseSelect, BaseTextField } from '../../../components/base';
 
 export const Signup = () => {
+  const form = useForm({ schema: signupSchema });
+  const { signup } = useAuth();
+  const {
+    formState: { isValid, isSubmitting }
+  } = form;
+
+  const handleSubmit = async values => {
+    await signup(values);
+  };
+
   return (
     <Box sx={style.container}>
       <Box sx={style.signupForm}>
@@ -13,34 +25,55 @@ export const Signup = () => {
         </Box>
         <Grid container justifyContent='center' alignItems='center'>
           <Grid item xs={12} md={6}>
-            <Box sx={style.textField}>
-              <BaseTextField fullWidth label=' First Name' />
-            </Box>
-            <Box sx={style.textField}>
-              <BaseTextField fullWidth label=' Last Name' />
-            </Box>
-            <Box sx={style.textField}>
-              <BaseTextField fullWidth label=' Email' />
-            </Box>
-            <Box sx={style.textField}>
-              <BaseTextField fullWidth label=' Phone Number' />
-            </Box>
-            <Box sx={style.textField}>
-              <BaseTextField fullWidth label='Password' />
-            </Box>
-            <Box>
-              <BaseTextField fullWidth label='Confirm Password' />
-            </Box>
-            <Box sx={style.button}>
-              <BaseButton variant='contained' fullWidth={true} size='small'>
-                Signup
-              </BaseButton>
-            </Box>
-            <Box sx={style.anchorContainer}>
-              <p>
-                Already have an Account? <Link to='/auth/login'>Login</Link>
-              </p>
-            </Box>
+            <BaseForm form={form} onSubmit={handleSubmit}>
+              <Box sx={style.textField}>
+                <BaseTextField fullWidth label=' First Name' name='firstName' />
+              </Box>
+              <Box sx={style.textField}>
+                <BaseTextField fullWidth label=' Last Name' name='lastName' />
+              </Box>
+              <Box sx={style.textField}>
+                <BaseTextField fullWidth label=' Email' name='email' />
+              </Box>
+              <Box sx={style.textField}>
+                <BaseTextField fullWidth label=' Phone Number' name='phoneNumber' />
+              </Box>
+              <Box sx={style.textField}>
+                <BaseTextField fullWidth label='Password' type='password' name='password' />
+              </Box>
+              <Box sx={style.textField}>
+                <BaseTextField fullWidth label='Confirm Password' type='password' name='confirmPassword' />
+              </Box>
+              <Box>
+                <BaseSelect
+                  fullWidth
+                  label='Are you'
+                  options={[
+                    { value: 'buyer', label: 'Buyer' },
+                    { value: 'seller', label: 'Seller' }
+                  ]}
+                  name='userType'
+                />
+              </Box>
+
+              <Box sx={style.button}>
+                <BaseButton
+                  disabled={!isValid}
+                  loading={isSubmitting}
+                  type='submit'
+                  variant='contained'
+                  fullWidth={true}
+                  size='small'
+                >
+                  Signup
+                </BaseButton>
+              </Box>
+              <Box sx={style.anchorContainer}>
+                <p>
+                  Already have an Account? <Link to='/auth/login'>Login</Link>
+                </p>
+              </Box>
+            </BaseForm>
           </Grid>
         </Grid>
       </Box>
@@ -60,7 +93,8 @@ const style = {
     border: '1px solid',
     borderColor: 'grey.light',
     borderRadius: '10px',
-    px: '10px'
+    px: '10px',
+    py: 4
   },
   formCenter: {
     width: '50%',
