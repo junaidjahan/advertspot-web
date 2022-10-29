@@ -1,7 +1,12 @@
 import { AppBar, Box, Container, Toolbar } from '@mui/material';
-import { BaseButton, BaseMenu, BaseTextField } from '~/components';
+import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { BaseButton, BaseMenu } from '~/components';
+import { authState } from '~/state';
 
 export const BuyerNavbar = () => {
+  const [auth, setAuth] = useRecoilState(authState);
+  const navigate = useNavigate();
   const jobs = [
     {
       text: 'My Jobs'
@@ -40,9 +45,22 @@ export const BuyerNavbar = () => {
     },
     {
       text: 'Logout',
-      icon: 'logout'
+      icon: 'logout',
+      method: logout
+    },
+    {
+      text: 'Dashboard',
+      icon: 'dashboard',
+      method: () => {
+        navigate('/buyer/dashboard');
+      }
     }
   ];
+
+  function logout() {
+    localStorage.removeItem('auth');
+    setAuth(null);
+  }
 
   return (
     <Box sx={{ flexGrow: 1 }}>

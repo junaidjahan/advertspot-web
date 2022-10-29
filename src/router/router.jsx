@@ -1,16 +1,17 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { AuthRoute, PrivateRoute } from '~/components';
 import { AuthLayout, BuyerLayout, SellerLayout } from '~/layouts';
-import { BuyerDashboard, Home, Login, Signup } from '~/pages';
+import { BuyerDashboard, Home, Login, PostJob, Signup } from '~/pages';
 
 export const Router = () => {
   return (
     <Routes>
       <Route path='/' element={<PrivateRoute />}>
-        <Route path='/' element={<Navigate to='home' replace />} />
+        <Route path='/' element={<Navigate to='buyer/dashboard' replace />} />
         <Route path='home' element={<Home />} />
         <Route path='buyer/*' element={<BuyerLayout />}>
           <Route path='dashboard' element={<BuyerDashboard />} />
+          <Route path='post-job' element={<PostJob />} />
         </Route>
         <Route path='seller/*' element={<SellerLayout />} />
       </Route>

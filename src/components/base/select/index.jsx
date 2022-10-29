@@ -4,7 +4,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 /**
  * @param {import('@mui/material').SelectProps}
  */
-export const BaseSelect = ({ name, options, label, ...props }) => {
+export const BaseSelect = ({ name, options, label, required, ...props }) => {
   const {
     control,
     formState: { errors }
@@ -17,7 +17,7 @@ export const BaseSelect = ({ name, options, label, ...props }) => {
       defaultValue=''
       render={({ field }) => (
         <>
-          <FormControl fullWidth size='small'>
+          <FormControl required={required} fullWidth size='small'>
             <InputLabel id='demo-simple-select-label'>{label}</InputLabel>
             <Select
               labelId='demo-simple-select-label'

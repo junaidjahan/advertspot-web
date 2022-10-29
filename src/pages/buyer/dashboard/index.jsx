@@ -1,10 +1,12 @@
 import { Box, Container, Icon } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { BaseButton, BaseCard } from '~/components';
 import { userState } from '~/state';
 
 export const BuyerDashboard = () => {
   const [user, setUser] = useRecoilState(userState);
+  const navigate = useNavigate();
 
   const jobs = [
     {
@@ -44,7 +46,7 @@ export const BuyerDashboard = () => {
         'A strong working relationship starts with open communication. Here’s your chance to ask about experience, set expectations for what you need, and discuss terms of the work.'
     },
     {
-      title: '4. Pay for work you approve',
+      title: '3. Pay for work you approve',
       imgSrc: '/cashless-payment.png',
       description:
         'Reports are useful for keeping track of payments and reviewing work. As you complete jobs, you can build trusting relationships with talent in a way that helps you both grow.'
@@ -63,7 +65,13 @@ export const BuyerDashboard = () => {
           </Box>
           <Box>
             <BaseButton variant='outlined'>Browse Catalog</BaseButton>
-            <BaseButton className='ml-10' variant='contained'>
+            <BaseButton
+              onClick={() => {
+                navigate('/buyer/post-job', { replace: true });
+              }}
+              className='ml-10'
+              variant='contained'
+            >
               Post a Job
             </BaseButton>
           </Box>
@@ -74,9 +82,9 @@ export const BuyerDashboard = () => {
               <h3 style={style.heading}>Your Postings</h3>
               <a style={style.anchor}>See all postings</a>
             </Box>
-            {jobs.map(job => {
+            {jobs.map((job, index) => {
               return (
-                <Box sx={style.list}>
+                <Box key={index} sx={style.list}>
                   <Box className='d-flex justify-space-between'>
                     <Box>
                       <h4 style={style.jobTitle}>{job.title}</h4>
@@ -115,9 +123,9 @@ export const BuyerDashboard = () => {
             <p>Connect with a talent community that numbers in the millions, fast and at no cost.</p>
           </Box>
 
-          {workDetails.map(detail => {
+          {workDetails.map((detail, index) => {
             return (
-              <>
+              <Box key={index}>
                 <Box className='d-flex' sx={style.workDetailslist}>
                   <Box className='mr-40'>
                     <img src={detail.imgSrc} width={130} alt='' />
@@ -128,7 +136,7 @@ export const BuyerDashboard = () => {
                   </Box>
                 </Box>
                 <hr />
-              </>
+              </Box>
             );
           })}
         </BaseCard>
