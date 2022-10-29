@@ -90,7 +90,13 @@ export const BaseMenu = ({ menuItems, icon, buttonText, anchorPosition = 'left' 
       >
         {menuItems.map((item, index) => {
           return (
-            <MenuItem sx={style.menuItem} key={index}>
+            <MenuItem
+              onClick={() => {
+                item.method();
+              }}
+              sx={style.menuItem}
+              key={index}
+            >
               {item.icon && <Icon sx={style.menuIcon}>{item.icon}</Icon>}
               {item.text}
             </MenuItem>

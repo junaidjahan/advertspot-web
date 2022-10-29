@@ -12,7 +12,7 @@ export const useAuth = () => {
 
   const saveAuth = authData => {
     setAuth(authData);
-    navigate(authData ? '/' : '/auth/login', { replace: true });
+    navigate(authData ? '/buyer/dashboard' : '/auth/login', { replace: true });
   };
 
   const login = async data => {
