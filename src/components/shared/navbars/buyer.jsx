@@ -58,7 +58,7 @@ export const BuyerNavbar = () => {
               </BaseButton>
             </Box>
             <Box sx={style.itemsBox}>
-              <BaseTextField label='Search' />
+              {/* <BaseTextField label='Search' /> */}
               <BaseMenu menuItems={notifications} anchorPosition='right' icon='notifications' />
               <BaseMenu menuItems={account} anchorPosition='right' icon='account_circle' />
             </Box>

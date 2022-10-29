@@ -1,7 +1,11 @@
 import { Box, Container, Icon } from '@mui/material';
+import { useRecoilState } from 'recoil';
 import { BaseButton, BaseCard } from '~/components';
+import { userState } from '~/state';
 
 export const BuyerDashboard = () => {
+  const [user, setUser] = useRecoilState(userState);
+
   const jobs = [
     {
       title: 'Flex Designer',
@@ -53,7 +57,9 @@ export const BuyerDashboard = () => {
         <Box className='d-flex justify-space-between mt-20 pt-40'>
           <Box>
             <h2>Your Dashboard</h2>
-            <h4 style={style.userName}>Username</h4>
+            <h4 style={style.userName}>
+              {user.firstName} {user.lastName}
+            </h4>
           </Box>
           <Box>
             <BaseButton variant='outlined'>Browse Catalog</BaseButton>
