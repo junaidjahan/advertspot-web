@@ -2,7 +2,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import { useEffect } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { BaseSnackbar } from './components';
+import { BaseSnackbar, Loader } from './components';
 import { isEmpty } from './global';
 import { useAxios } from './hooks';
 import { Router } from './router';
@@ -34,6 +34,7 @@ export const App = () => {
   return (
     <BrowserRouter>
       <ThemeProvider theme={theme}>
+        <Loader />
         <BaseSnackbar />
         <Router />
       </ThemeProvider>

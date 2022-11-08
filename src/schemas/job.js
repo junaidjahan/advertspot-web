@@ -6,5 +6,11 @@ export const jobSchema = z.object({
   Dimensions: z.string().min(1, 'This field is required'),
   Budget: z.string().min(1, 'This field is required'),
   Description: z.string(),
+  Location: z.string().min(1, 'This field is required'),
   Type: z.string().min(1, 'This field is required')
+});
+
+export const jobFilterSchema = z.object({
+  title: z.string(),
+  category: z.string()
 });

@@ -4,15 +4,16 @@ import { useForm, useJob } from '~/hooks';
 import { jobSchema } from '~/schemas';
 import { userState } from '~/state';
 import { useForm as useHookForm } from 'react-hook-form';
+import { useEffect, useState } from 'react';
 
 export const PostJob = () => {
   const jobSteps = ['1. Post a job to the marketplace', '2. Get proposals from talent', '4. Pay for work you approve'];
   const jobType = [
-    { value: 'flex', label: 'Flex' },
-    { value: 'banner', label: 'Banner' },
-    { value: 'brochure', label: 'Brochure' },
-    { value: 'digital-marketing', label: 'Digital Marketing' },
-    { value: 'poster', label: 'Poster' },
+    { value: 'Flex', label: 'Flex' },
+    { value: 'Banner', label: 'Banner' },
+    { value: 'Brochure', label: 'Brochure' },
+    { value: 'Digital Marketing', label: 'Digital Marketing' },
+    { value: 'Poster', label: 'Poster' },
     { value: 'Flyer', label: 'Flyer' }
   ];
   const form = useForm({ schema: jobSchema });
@@ -22,7 +23,15 @@ export const PostJob = () => {
     reset
   } = form;
 
-  const { saveJob } = useJob();
+  const { saveJob, getAllCities } = useJob();
+
+  const [cities, setCities] = useState([]);
+
+  useEffect(() => {
+    getAllCities().then(res => {
+      setCities(res[0].cities);
+    });
+  }, []);
 
   const handleSubmit = async values => {
     await saveJob(values);
@@ -88,14 +97,20 @@ export const PostJob = () => {
               </Grid>
               <Grid item xs={12} md={6}>
                 <Box sx={style.textField}>
-                  <BaseTextField fullWidth label='Description' name='Description' />
+                  <BaseSelect fullWidth required={true} label='Type' options={jobType} name='Type' />
                 </Box>
               </Grid>
               <Grid item xs={12} md={6}>
                 <Box sx={style.textField}>
-                  <BaseSelect fullWidth required={true} label='Type' options={jobType} name='Type' />
+                  <BaseSelect fullWidth required={true} label='Location' options={cities} name='Location' />
                 </Box>
               </Grid>
+              <Grid item md={12}>
+                <Box sx={style.textField}>
+                  <BaseTextField rows={4} multiline fullWidth label='Description' name='Description' />
+                </Box>
+              </Grid>
+
               <Grid item md={12}>
                 <Box sx={style.button}>
                   <BaseButton variant='contained' disabled={!isValid} loading={isSubmitting} size='small' type='submit'>

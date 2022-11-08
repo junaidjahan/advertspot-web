@@ -5,3 +5,4 @@ export * from './menu';
 export * from './snackbar';
 export * from './text-field';
 export * from './select';
+export * from './autocomplete';

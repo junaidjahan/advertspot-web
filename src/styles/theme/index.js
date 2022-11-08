@@ -33,6 +33,12 @@ export const theme = createTheme({
     },
     white: {
       main: '#ffffff'
+    },
+    lightGrey: {
+      main: '#f4f4f4'
+    },
+    red: {
+      main: '#E02020'
     }
   }
 });

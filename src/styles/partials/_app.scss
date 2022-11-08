@@ -31,7 +31,7 @@ $i: 0;
   display: flex;
 }
 
-@each $align in ('space-between', 'center', 'space-around') {
+@each $align in ('space-between', 'center', 'space-around','end') {
   .justify-#{$align} {
     justify-content: #{$align};
   }
