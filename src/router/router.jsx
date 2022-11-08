@@ -1,7 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { AuthRoute, PrivateRoute } from '~/components';
 import { AuthLayout, BuyerLayout, SellerLayout } from '~/layouts';
-import { AllJobs, BuyerDashboard, Home, Login, PostJob, Signup } from '~/pages';
+import { BuyerDashboard, AllJobs, CreateGig, Home, Jobs, Login, PostJob, SellerDashboard, Signup } from '~/pages';
 
 export const Router = () => {
   return (
@@ -15,6 +15,9 @@ export const Router = () => {
         </Route>
         <Route path='seller/*' element={<SellerLayout />}>
           <Route path='all-jobs' element={<AllJobs />} />
+          <Route path='dashboard' element={<SellerDashboard />} />
+          <Route path='jobs' element={<Jobs />} />
+          <Route path='creategig' element={<CreateGig />} />
         </Route>
       </Route>
 
