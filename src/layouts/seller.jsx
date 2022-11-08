@@ -1,10 +1,11 @@
 import { Outlet } from 'react-router-dom';
 import { Navbar } from '~/components';
+import { SellerNavbar } from '~/components';
 
 export const SellerLayout = () => {
   return (
     <div>
-      <Navbar />
+      <SellerNavbar />
       <main>
         <Outlet />
       </main>

@@ -1,11 +1,18 @@
 import { Grid, Avatar, Typography, Stack, CardMedia, Rating, Box } from '@mui/material';
 import { useRecoilValue } from 'recoil';
-import { CardWrapper } from '~/components';
+import { BaseCard, CardWrapper, Navbar } from '~/components';
 import { userState } from '~/state';
 
 export const Home = () => {
   const user = useRecoilValue(userState);
-
+  const gigs = [{
+    gig_image:'https://www.imgacademy.com/themes/custom/imgacademy/images/helpbox-contact.jpg',
+    avatar:'https://308286-943399-raikfcquaxqncofqfm.stackpathdns.com/wp-content/uploads/2022/03/cute-nice-dp-for-whatsapp.png',
+    name:'Ali',
+    gig_description:'aldkakdklakdldkawlkdl;wadkl;wakdalwk',
+    rating:4,
+    price:2000,
+  }]
   return (
     <div>
       <Navbar />

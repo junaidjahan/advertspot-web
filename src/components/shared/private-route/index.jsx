@@ -9,5 +9,6 @@ export const PrivateRoute = ({ redirectPath = '/auth/login', isAllowed = true })
     return <Navigate to={redirectPath} replace />;
   }
 
-  return auth ? <Outlet /> : <Navigate to={redirectPath} />;
+  // return auth ? <Outlet /> : <Navigate to={redirectPath} />;
+  return <Outlet /> ;
 };
