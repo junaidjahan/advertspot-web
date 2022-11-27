@@ -1,12 +1,28 @@
 import { Box, Container, Icon } from '@mui/material';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { BaseButton, BaseCard } from '~/components';
-import { userState } from '~/state';
+import { authState, userState } from '~/state';
 
 export const BuyerDashboard = () => {
   const [user, setUser] = useRecoilState(userState);
   const navigate = useNavigate();
+  const auth = useRecoilValue(authState);
+
+  const handleAuth = async () => {
+    if (user && auth) {
+      const navigation = user.userTypes?.includes('seller') ? '/seller/dashboard' : '/buyer/dashboard';
+      navigate(navigation, { replace: true });
+      console.log('USer');
+    } else {
+      navigate('/auth/login', { replace: true });
+    }
+  };
+
+  useEffect(() => {
+    handleAuth();
+  }, [user, auth]);
 
   const jobs = [
     {

@@ -1,9 +1,25 @@
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { AuthRoute, PrivateRoute } from '~/components';
 import { AuthLayout, BuyerLayout, SellerLayout } from '~/layouts';
 import { BuyerDashboard, AllJobs, CreateGig, Home, Jobs, Login, PostJob, SellerDashboard, Signup } from '~/pages';
+import { authState, userState } from '~/state';
 
 export const Router = () => {
+  const auth = useRecoilValue(authState);
+  const navigate = useNavigate();
+  const [user, setUser] = useRecoilState(userState);
+
+  const handleAuth = async () => {
+    if (!auth) {
+      navigate('/auth/login', { replace: true });
+    }
+  };
+
+  useEffect(() => {
+    handleAuth();
+  }, [user, auth]);
   return (
     <Routes>
       <Route path='/' element={<PrivateRoute />}>
