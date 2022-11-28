@@ -1,17 +1,28 @@
 import { useEffect } from 'react';
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
+
+import { useRecoilState, useRecoilValue } from 'recoil';
+
 import { AuthRoute, PrivateRoute } from '~/components';
 import Messages from '~/components/shared/message';
 import { AuthLayout, BuyerLayout, SellerLayout } from '~/layouts';
+
 import { AllJobs, BuyerDashboard, CreateGig, Home, JobDetails, Login, PostJob, SellerDashboard, Signup } from '~/pages';
-import { authState } from '~/state';
+
+
+import { authState, userState } from '~/state';
+
 
 export const Router = () => {
   const auth = useRecoilValue(authState);
   const navigate = useNavigate();
 
-  const handleAuth = () => {
+
+
+  const [user, setUser] = useRecoilState(userState);
+
+  const handleAuth = async () => {
+
     if (!auth) {
       navigate('/auth/login', { replace: true });
     }
@@ -20,6 +31,7 @@ export const Router = () => {
   useEffect(() => {
     handleAuth();
   }, [auth]);
+
 
   return (
     <Routes>
