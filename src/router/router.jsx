@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { AuthRoute, PrivateRoute } from '~/components';
+import Messages from '~/components/shared/message';
 import { AuthLayout, BuyerLayout, SellerLayout } from '~/layouts';
 import { BuyerDashboard, CreateGig, Home, Jobs, Login, PostJob, SellerDashboard, Signup } from '~/pages';
 
@@ -17,6 +18,7 @@ export const Router = () => {
           <Route path='dashboard' element={<SellerDashboard />} />
           <Route path='jobs' element={<Jobs />} />
           <Route path='creategig' element={<CreateGig />} />
+          <Route path='messages' element={<Messages />} />
         </Route>
       </Route>
 
