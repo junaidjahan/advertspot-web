@@ -24,6 +24,19 @@ export const BuyerDashboard = () => {
     handleAuth();
   }, [user, auth]);
 
+  const handleAuth = () => {
+    if (user.userTypes) {
+      console.log('User');
+      const navigation = user.userTypes.includes('seller') ? '/seller/dashboard' : '/buyer/dashboard';
+      navigate(navigation, { replace: true });
+    }
+  };
+
+  useEffect(() => {
+    handleAuth();
+    console.log(user);
+  }, [user]);
+
   const jobs = [
     {
       title: 'Flex Designer',
