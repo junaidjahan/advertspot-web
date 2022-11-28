@@ -1,9 +1,25 @@
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 import { AuthRoute, PrivateRoute } from '~/components';
 import { AuthLayout, BuyerLayout, SellerLayout } from '~/layouts';
-import { BuyerDashboard, AllJobs, CreateGig, Home, Jobs, Login, PostJob, SellerDashboard, Signup } from '~/pages';
+import { AllJobs, BuyerDashboard, CreateGig, Home, JobDetails, Login, PostJob, SellerDashboard, Signup } from '~/pages';
+import { authState } from '~/state';
 
 export const Router = () => {
+  const auth = useRecoilValue(authState);
+  const navigate = useNavigate();
+
+  const handleAuth = () => {
+    if (!auth) {
+      navigate('/auth/login', { replace: true });
+    }
+  };
+
+  useEffect(() => {
+    handleAuth();
+  }, [auth]);
+
   return (
     <Routes>
       <Route path='/' element={<PrivateRoute />}>
@@ -15,8 +31,8 @@ export const Router = () => {
         </Route>
         <Route path='seller/*' element={<SellerLayout />}>
           <Route path='all-jobs' element={<AllJobs />} />
+          <Route path='view-job-details/:id' element={<JobDetails />} />
           <Route path='dashboard' element={<SellerDashboard />} />
-          <Route path='jobs' element={<Jobs />} />
           <Route path='creategig' element={<CreateGig />} />
         </Route>
       </Route>

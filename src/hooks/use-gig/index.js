@@ -4,22 +4,25 @@ import { authState, userState } from '~/state';
 import { useAxios } from '../use-axios';
 
 export const useGig = () => {
-    const { post } = useAxios();
-    const navigate = useNavigate();
+  const { post } = useAxios();
+  const navigate = useNavigate();
 
-    const setAuth = useSetRecoilState(authState);
-    const user = useRecoilValue(userState);
+  const user = useRecoilValue(userState);
 
-    const saveGig = async gigData => {
-        {
-            try {
-                // await post('/gig', gigData);
-                console.log(gigData.enteries());
-            } catch { }
-        }
-    };
+  const saveGig = async gigData => {
+    {
+      try {
+        // await post('/gig', gigData);
+        console.log(gigData.enteries());
+      } catch {}
+    }
+  };
 
-    return {
-        saveGig
-    };
+  // const getById = async ()=>{
+  //     return
+  // }
+
+  return {
+    saveGig
+  };
 };
