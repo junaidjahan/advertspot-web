@@ -71,7 +71,7 @@ export const BuyerNavbar = () => {
               <img src='/logo.png' width={50} style={style.image} />
               <BaseMenu menuItems={jobs} buttonText='Jobs' />
               <BaseMenu menuItems={browse} buttonText='Browse' />
-              <BaseButton size='small' color='black' sx={style.messages}>
+              <BaseButton size='small' onClick={() => navigate('/buyer/messages', { replace: true })} color='black' sx={style.messages}>
                 Messages
               </BaseButton>
             </Box>

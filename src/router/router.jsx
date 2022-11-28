@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { AuthRoute, PrivateRoute } from '~/components';
+import Messages from '~/components/shared/message';
 import { AuthLayout, BuyerLayout, SellerLayout } from '~/layouts';
 import { AllJobs, BuyerDashboard, CreateGig, Home, JobDetails, Login, PostJob, SellerDashboard, Signup } from '~/pages';
 import { authState } from '~/state';
@@ -34,6 +35,7 @@ export const Router = () => {
           <Route path='view-job-details/:id' element={<JobDetails />} />
           <Route path='dashboard' element={<SellerDashboard />} />
           <Route path='creategig' element={<CreateGig />} />
+          <Route path='messages' element={<Messages />} />
         </Route>
       </Route>
 
