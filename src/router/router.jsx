@@ -7,9 +7,21 @@ import { AuthRoute, PrivateRoute } from '~/components';
 import Messages from '~/components/shared/message';
 import { AuthLayout, BuyerLayout, SellerLayout } from '~/layouts';
 
-import { AllJobs, BuyerDashboard, CreateGig, Home, JobDetails, Login, PostJob, SellerDashboard, Signup } from '~/pages';
+import {
+  AllJobs,
+  About,
+  BuyerDashboard,
+  CreateGig,
+  Home,
+  JobDetails,
+  Login,
+  PostJob,
+  SellerDashboard,
+  Signup
+} from '~/pages';
 import { CreateProposal } from '~/pages/seller/proposal/create-proposal';
 
+import { ContactUs } from '~/pages/contactus';
 import { authState, userState } from '~/state';
 
 export const Router = () => {
@@ -33,6 +45,8 @@ export const Router = () => {
       <Route path='/' element={<PrivateRoute />}>
         <Route path='/' element={<Navigate to='buyer/dashboard' replace />} />
         <Route path='home' element={<Home />} />
+        <Route path='contact-us' element={<ContactUs />} />
+        <Route path='about' element={<About />} />
         <Route path='buyer/*' element={<BuyerLayout />}>
           <Route path='dashboard' element={<BuyerDashboard />} />
           <Route path='post-job' element={<PostJob />} />
