@@ -14,7 +14,6 @@ export const BuyerDashboard = () => {
     if (user && auth) {
       const navigation = user.userTypes?.includes('seller') ? '/seller/dashboard' : '/buyer/dashboard';
       navigate(navigation, { replace: true });
-      console.log('USer');
     } else {
       navigate('/auth/login', { replace: true });
     }
@@ -23,19 +22,6 @@ export const BuyerDashboard = () => {
   useEffect(() => {
     handleAuth();
   }, [user, auth]);
-
-  const handleAuth = () => {
-    if (user.userTypes) {
-      console.log('User');
-      const navigation = user.userTypes.includes('seller') ? '/seller/dashboard' : '/buyer/dashboard';
-      navigate(navigation, { replace: true });
-    }
-  };
-
-  useEffect(() => {
-    handleAuth();
-    console.log(user);
-  }, [user]);
 
   const jobs = [
     {

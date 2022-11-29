@@ -31,3 +31,9 @@ body {
   margin: 0;
   height: 100%;
 }
+
+@each $c in pointer, default {
+  .cursor-#{$c} {
+      cursor: $c !important;
+  }
+}

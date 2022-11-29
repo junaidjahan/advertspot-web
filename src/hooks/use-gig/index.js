@@ -12,8 +12,7 @@ export const useGig = () => {
   const saveGig = async gigData => {
     {
       try {
-        // await post('/gig', gigData);
-        console.log(gigData.enteries());
+        await post('/gig', gigData);
       } catch {}
     }
   };

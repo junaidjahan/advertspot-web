@@ -8,21 +8,17 @@ import Messages from '~/components/shared/message';
 import { AuthLayout, BuyerLayout, SellerLayout } from '~/layouts';
 
 import { AllJobs, BuyerDashboard, CreateGig, Home, JobDetails, Login, PostJob, SellerDashboard, Signup } from '~/pages';
-
+import { CreateProposal } from '~/pages/seller/proposal/create-proposal';
 
 import { authState, userState } from '~/state';
-
 
 export const Router = () => {
   const auth = useRecoilValue(authState);
   const navigate = useNavigate();
 
-
-
   const [user, setUser] = useRecoilState(userState);
 
   const handleAuth = async () => {
-
     if (!auth) {
       navigate('/auth/login', { replace: true });
     }
@@ -31,7 +27,6 @@ export const Router = () => {
   useEffect(() => {
     handleAuth();
   }, [auth]);
-
 
   return (
     <Routes>
@@ -48,6 +43,7 @@ export const Router = () => {
           <Route path='dashboard' element={<SellerDashboard />} />
           <Route path='creategig' element={<CreateGig />} />
           <Route path='messages' element={<Messages />} />
+          <Route path='submit-proposal/:id' element={<CreateProposal />} />
         </Route>
       </Route>
 

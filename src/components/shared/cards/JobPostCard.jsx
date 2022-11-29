@@ -1,8 +1,15 @@
 import { Box, Chip, Icon } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import { BaseButton } from '~/components/base';
 import { jobSchema } from '~/schemas';
 
 export const JobPostCard = ({ job, sx }) => {
+  const navigate = useNavigate();
+
+  const getById = id => {
+    navigate(`/seller/view-job-details/${id}`);
+  };
+
   return (
     <Box sx={style.container}>
       <Box>
@@ -11,7 +18,13 @@ export const JobPostCard = ({ job, sx }) => {
             <h3 style={style.title}>{job.Title}</h3>
           </Box>
           <Box>
-            <BaseButton>view</BaseButton>
+            <BaseButton
+              onClick={() => {
+                getById(job._id);
+              }}
+            >
+              view
+            </BaseButton>
           </Box>
         </Box>
         <Box>

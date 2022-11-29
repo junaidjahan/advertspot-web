@@ -9,12 +9,12 @@ import { useEffect, useState } from 'react';
 export const PostJob = () => {
   const jobSteps = ['1. Post a job to the marketplace', '2. Get proposals from talent', '4. Pay for work you approve'];
   const jobType = [
-    { value: 'Flex', label: 'Flex' },
-    { value: 'Banner', label: 'Banner' },
-    { value: 'Brochure', label: 'Brochure' },
-    { value: 'Digital Marketing', label: 'Digital Marketing' },
-    { value: 'Poster', label: 'Poster' },
-    { value: 'Flyer', label: 'Flyer' }
+    { value: 'flex', label: 'Flex' },
+    { value: 'banner', label: 'Banner' },
+    { value: 'brochure', label: 'Brochure' },
+    { value: 'digital-marketing', label: 'Digital Marketing' },
+    { value: 'poster', label: 'Poster' },
+    { value: 'flyer', label: 'Flyer' }
   ];
   const form = useForm({ schema: jobSchema });
   //   const { reset } = useHookForm({ defaultValues: { Title: '', Budget: '' } });

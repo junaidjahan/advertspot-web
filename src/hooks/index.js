@@ -4,3 +4,4 @@ export * from './use-form';
 export * from './use-snackbar';
 export * from './use-job';
 export * from './use-gig';
+export * from './use-proposal';

@@ -18,3 +18,11 @@ export const serializeQuery = (params, prefix = '') => {
 };
 
 export const isEmpty = object => !Object.keys(object).length;
+
+export const toTitleCase = phrase => {
+  return phrase
+    .toLowerCase()
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+};
