@@ -2,7 +2,8 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { AuthRoute, PrivateRoute } from '~/components';
 import Messages from '~/components/shared/message';
 import { AuthLayout, BuyerLayout, SellerLayout } from '~/layouts';
-import { BuyerDashboard, CreateGig, Home, Jobs, Login, PostJob, SellerDashboard, Signup } from '~/pages';
+import { About, BuyerDashboard, CreateGig, Home, Jobs, Login, PostJob, SellerDashboard, Signup } from '~/pages';
+import { ContactUs } from '~/pages/contactus';
 
 export const Router = () => {
   return (
@@ -10,6 +11,8 @@ export const Router = () => {
       <Route path='/' element={<PrivateRoute />}>
         <Route path='/' element={<Navigate to='buyer/dashboard' replace />} />
         <Route path='home' element={<Home />} />
+        <Route path='contact-us' element={<ContactUs />} />
+        <Route path='about' element={<About />} />
         <Route path='buyer/*' element={<BuyerLayout />}>
           <Route path='dashboard' element={<BuyerDashboard />} />
           <Route path='post-job' element={<PostJob />} />
