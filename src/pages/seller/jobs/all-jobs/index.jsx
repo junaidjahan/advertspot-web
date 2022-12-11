@@ -21,11 +21,10 @@ export const AllJobs = () => {
     reset
   } = form;
 
-  const { saveJob, getAll, filterType } = useJob();
+  const { getAll, filterType } = useJob();
   const [jobs, setJobs] = useState([]);
   const [filter, setFilter] = useState(filterType);
   const { openLoader, closeLoader } = useLoader();
-  const [page, setPage] = useState(1);
   const [count, setCount] = useState(1);
   const [clearFilter, setClearFilter] = useState(false);
 

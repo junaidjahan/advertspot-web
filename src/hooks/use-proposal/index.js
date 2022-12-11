@@ -18,14 +18,23 @@ export const useProposal = () => {
     }
   };
 
-  // const getAll = async filter => {
-  //   {
-  //     try {
-  //       const allJobs = await get(`/job?filter=${JSON.stringify(filter)}`);
-  //       return allJobs;
-  //     } catch {}
-  //   }
-  // };
+  const getAllProposals = async id => {
+    {
+      try {
+        const proposals = await get(`/proposal/proposals-by-id/${id}`);
+        return proposals;
+      } catch {}
+    }
+  };
+
+  const getProposalById = async id => {
+    {
+      try {
+        const proposal = await get(`/proposal/get-by-id/${id}`);
+        return proposal;
+      } catch {}
+    }
+  };
 
   // const getById = async id => {
   //   {
@@ -37,6 +46,8 @@ export const useProposal = () => {
   // };
 
   return {
-    saveProposal
+    saveProposal,
+    getAllProposals,
+    getProposalById
   };
 };

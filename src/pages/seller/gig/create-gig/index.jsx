@@ -17,7 +17,7 @@ import { gigSchema } from '~/schemas';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import { SetMealOutlined } from '@mui/icons-material';
 import { useGig } from '~/hooks/use-gig';
-import { uploadImage } from '../.../../../../services/cloudinary';
+import { uploadImage } from '../../../../services/cloudinary';
 import { useState } from 'react';
 import { useLoader } from '~/hooks/use-loader';
 
@@ -29,7 +29,7 @@ export const CreateGig = () => {
     { value: 'brochure', label: 'Brochure' },
     { value: 'digital-marketing', label: 'Digital Marketing' },
     { value: 'poster', label: 'Poster' },
-    { value: 'Flyer', label: 'Flyer' }
+    { value: 'flyer', label: 'Flyer' }
   ];
   const form = useForm({ schema: gigSchema });
   //   const { reset } = useHookForm({ defaultValues: { Title: '', Budget: '' } });
@@ -125,13 +125,13 @@ export const CreateGig = () => {
               </Grid>
               <Grid item xs={12} md={6}>
                 <Box sx={style.textField}>
-                  <BaseTextField required fullWidth label='Price' name='price' />
+                  <BaseTextField type='number' required fullWidth label='Price' name='price' />
                 </Box>
               </Grid>
 
               <Grid item xs={12} md={6}>
                 <Box sx={style.textField}>
-                  <BaseTextField required fullWidth label='Quantity' name='quantity' />
+                  <BaseTextField type='number' required fullWidth label='Quantity' name='quantity' />
                 </Box>
               </Grid>
               <Grid item xs={12} md={6}>
@@ -141,7 +141,7 @@ export const CreateGig = () => {
               </Grid>
               <Grid item xs={12} md={6}>
                 <Box sx={style.textField}>
-                  <BaseTextField required fullWidth label='Delivery' name='delivery' />
+                  <BaseTextField required fullWidth label='Delivery Duration' name='delivery' />
                 </Box>
               </Grid>
               <Grid item xs={12} md={6}>
@@ -155,7 +155,7 @@ export const CreateGig = () => {
                 </Box>
               </Grid>
               <Grid item xs={12} md={12}>
-                <Box sx={{ border: '1px solid grey', borderRadius: '4px' }}>
+                <Box sx={{ border: '1px solid #dfdfdf', borderRadius: '4px' }}>
                   {!PreviewImages.length > 0 ? (
                     <Stack
                       direction='row'

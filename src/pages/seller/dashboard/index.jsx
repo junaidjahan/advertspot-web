@@ -1,9 +1,9 @@
 import { Box, Container, Icon, Typography, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { BaseButton, BaseCard } from '~/components';
-import { userState } from '~/state';
-import { useState } from 'react';
+import { authState, userState } from '~/state';
+import { useEffect, useState } from 'react';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 export const SellerDashboard = () => {
@@ -11,7 +11,16 @@ export const SellerDashboard = () => {
   const [IsAOExpanded, setIsAOExpanded] = useState(false);
   const [IsCOExpanded, setIsCOExpanded] = useState(false);
   const [IsCAExpanded, setIsCAExpanded] = useState(false);
+  const auth = useRecoilValue(authState);
   const navigate = useNavigate();
+  const handleAuth = async () => {
+    if (user && auth) {
+      const navigation = user.userTypes?.includes('seller') ? '/seller/dashboard' : '/buyer/dashboard';
+      navigate(navigation, { replace: true });
+    } else {
+      navigate('/auth/login', { replace: true });
+    }
+  };
 
   const jobs = [
     {
@@ -57,6 +66,10 @@ export const SellerDashboard = () => {
         'Reports are useful for keeping track of payments and reviewing work. As you complete jobs, you can build trusting relationships with talent in a way that helps you both grow.'
     }
   ];
+
+  useEffect(() => {
+    handleAuth();
+  }, [user, auth]);
 
   return (
     <div>

@@ -9,24 +9,25 @@ export const BuyerNavbar = () => {
   const navigate = useNavigate();
   const jobs = [
     {
-      text: 'My Jobs'
+      text: 'My Jobs',
+      method: () => {
+        navigate('/buyer/dashboard');
+      }
     },
+
     {
-      text: 'All Job Posts'
-    },
-    {
-      text: 'All Contracts'
-    },
-    {
-      text: 'Post a Job'
+      text: 'Post a Job',
+      method: () => {
+        navigate('/buyer/post-job');
+      }
     }
   ];
   const browse = [
     {
-      text: 'Project Catalogs'
-    },
-    {
-      text: 'Categories'
+      text: 'Project Catalogs',
+      method: () => {
+        navigate('/home');
+      }
     }
   ];
   const notifications = [
@@ -35,14 +36,14 @@ export const BuyerNavbar = () => {
     }
   ];
   const account = [
-    {
-      text: 'Profile',
-      icon: 'person'
-    },
-    {
-      text: 'Settings',
-      icon: 'settings'
-    },
+    // {
+    //   text: 'Profile',
+    //   icon: 'person'
+    // },
+    // {
+    //   text: 'Settings',
+    //   icon: 'settings'
+    // },
     {
       text: 'Logout',
       icon: 'logout',
@@ -71,7 +72,12 @@ export const BuyerNavbar = () => {
               <img src='/logo.png' width={50} style={style.image} />
               <BaseMenu menuItems={jobs} buttonText='Jobs' />
               <BaseMenu menuItems={browse} buttonText='Browse' />
-              <BaseButton size='small' onClick={() => navigate('/buyer/messages', { replace: true })} color='black' sx={style.messages}>
+              <BaseButton
+                size='small'
+                onClick={() => navigate('/buyer/messages', { replace: true })}
+                color='black'
+                sx={style.messages}
+              >
                 Messages
               </BaseButton>
             </Box>

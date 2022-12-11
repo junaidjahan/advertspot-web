@@ -1,14 +1,35 @@
-import { Box, Container, Icon } from '@mui/material';
-import { useEffect } from 'react';
+import { Box, Container, Grid, Icon } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { BaseButton, BaseCard } from '~/components';
+import { toTitleCase } from '~/global';
+import { useJob } from '~/hooks';
+import { useLoader } from '~/hooks/use-loader';
 import { authState, userState } from '~/state';
 
 export const BuyerDashboard = () => {
   const [user, setUser] = useRecoilState(userState);
   const navigate = useNavigate();
   const auth = useRecoilValue(authState);
+  const { getCurrentUserJobs } = useJob();
+  const [jobs, setJobs] = useState([]);
+  const { openLoader, closeLoader } = useLoader();
+
+  const getAllJobs = () => {
+    openLoader();
+    getCurrentUserJobs()
+      .then(res => {
+        setJobs(res);
+      })
+      .finally(() => {
+        closeLoader();
+      });
+  };
+
+  const getById = id => {
+    navigate(`/seller/view-job-details/${id}`);
+  };
 
   const handleAuth = async () => {
     if (user && auth) {
@@ -21,32 +42,12 @@ export const BuyerDashboard = () => {
 
   useEffect(() => {
     handleAuth();
+    getAllJobs();
   }, [user, auth]);
 
-  const jobs = [
-    {
-      title: 'Flex Designer',
-      budget: '10,000 Pkr',
-      proposals: 10,
-      hired: 1,
-      status: 'In-Progress'
-    },
-    {
-      title: 'Banner Designer',
-      budget: '10,000 Pkr',
-      proposals: 10,
-      hired: 1,
-      status: 'In-Progress'
-    },
-    {
-      title: 'Poster Designer',
-      budget: '10,000 Pkr',
-      proposals: 10,
-      hired: 1,
-      status: 'In-Progress'
-    }
-  ];
-
+  const getProposal = id => {
+    navigate(`/buyer/proposals/${id}`);
+  };
   const workDetails = [
     {
       title: '1. Post a job to the marketplace',
@@ -79,7 +80,14 @@ export const BuyerDashboard = () => {
             </h4>
           </Box>
           <Box>
-            <BaseButton variant='outlined'>Browse Catalog</BaseButton>
+            <BaseButton
+              onClick={() => {
+                navigate('/home');
+              }}
+              variant='outlined'
+            >
+              Browse Catalog
+            </BaseButton>
             <BaseButton
               onClick={() => {
                 navigate('/buyer/post-job', { replace: true });
@@ -97,33 +105,46 @@ export const BuyerDashboard = () => {
               <h3 style={style.heading}>Your Postings</h3>
               <a style={style.anchor}>See all postings</a>
             </Box>
-            {jobs.map((job, index) => {
+            {jobs?.map((job, index) => {
               return (
                 <Box key={index} sx={style.list}>
                   <Box className='d-flex justify-space-between'>
-                    <Box>
-                      <h4 style={style.jobTitle}>{job.title}</h4>
+                    <Box
+                      sx={{ cursor: 'pointer' }}
+                      onClick={() => {
+                        getById(job?._id);
+                      }}
+                    >
+                      <h4 style={style.jobTitle}>{job?.Title}</h4>
                     </Box>
                     <Box>
-                      <Icon sx={style.icon}>delete</Icon>
+                      <BaseButton
+                        onClick={() => {
+                          getProposal(job?._id);
+                        }}
+                        size='small'
+                        variant='outlined'
+                      >
+                        Proposals <Icon sx={style.paymentIcon}> visibility </Icon>
+                      </BaseButton>
                     </Box>
                   </Box>
-                  <Box className='d-flex justify-space-between'>
+                  <Box className='d-flex mt-10 justify-space-between'>
                     <Box>
                       <p style={style.budget} className='d-flex'>
-                        Budget: {job.budget}
+                        Budget: {job?.Budget}
                       </p>
                     </Box>
                     <Box className='d-flex'>
-                      <h5 style={style.subHeading}>
+                      {/* <h5 style={style.subHeading}>
                         Proposals:
-                        <span style={style.details}> {job.proposals}</span>
+                        <span style={style.details}> {job?.Proposals}</span>
                       </h5>
                       <h5 className='ml-7' style={style.subHeading}>
-                        Hired:<span style={style.details}> {job.hired}</span>
-                      </h5>
+                        Hired:<span style={style.details}> 0</span>
+                      </h5> */}
                       <h5 className='ml-7' style={style.subHeading}>
-                        Status:<span style={style.details}> {job.status}</span>
+                        Status:<span style={style.details}> {toTitleCase(job?.Status ?? '')}</span>
                       </h5>
                     </Box>
                   </Box>
@@ -182,6 +203,12 @@ const style = {
     color: '#1f57c3'
   },
 
+  paymentIcon: {
+    fontSize: 20,
+    backgroundColor: 'grey',
+    ml: 1
+  },
+
   budget: {
     fontSize: 14,
     fontStyle: 'italic',
@@ -191,7 +218,8 @@ const style = {
     fontWeight: '400'
   },
   details: {
-    fontWeight: '600'
+    fontWeight: '600',
+    color: '#9B57F2'
   },
   icon: {
     color: 'darkGrey.light'
@@ -199,6 +227,8 @@ const style = {
   list: {
     p: 2,
     borderRadius: 2,
+    border: `1px solid #dfdfdf`,
+    mt: 1,
 
     '&:hover': {
       backgroundColor: 'primary.light'

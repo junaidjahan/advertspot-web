@@ -6,6 +6,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useLoader } from '~/hooks/use-loader';
 import { toTitleCase } from '~/global';
 import { proposalSchema } from '~/schemas/proposal';
+import { userState } from '~/state';
+import { useRecoilState } from 'recoil';
 
 export const CreateProposal = () => {
   const { openLoader, closeLoader } = useLoader();
@@ -14,6 +16,7 @@ export const CreateProposal = () => {
   const { open } = useSnackbar();
   const { saveProposal } = useProposal();
   const navigate = useNavigate();
+  const [user, setUser] = useRecoilState(userState);
   const {
     formState: { isValid, isSubmitting },
     reset
@@ -39,6 +42,7 @@ export const CreateProposal = () => {
   const handleSubmit = async values => {
     const data = { ...values };
     data.JobId = id;
+    data.UserId = user?.id;
     await saveProposal(data)
       .then(() => {
         reset();

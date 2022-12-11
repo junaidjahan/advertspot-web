@@ -1,21 +1,24 @@
 import { Box, Container, Grid, Icon, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
 import { BackPage, BaseButton } from '~/components';
 import { toTitleCase } from '~/global';
 import { useJob, useSnackbar } from '~/hooks';
 import { useLoader } from '~/hooks/use-loader';
+import { userState } from '~/state';
 
-export const JobDetails = () => {
+export const JobDetails = ({ jobId }) => {
   let { id } = useParams();
   const { getById } = useJob();
   const [job, setJob] = useState();
   const { openLoader, closeLoader } = useLoader();
   const navigate = useNavigate();
+  const [user, setUser] = useRecoilState(userState);
 
   const getJobById = () => {
     openLoader();
-    getById(id)
+    getById(jobId ? jobId : id)
       .then(res => {
         setJob(res);
       })
@@ -30,16 +33,23 @@ export const JobDetails = () => {
 
   useEffect(() => {
     getJobById();
-  }, [id]);
+  }, [jobId ? jobId : id]);
 
   return (
     <Container maxWidth='md'>
-      <Box className='mt-25'>
-        <BackPage></BackPage>
-      </Box>
-      <Box className='mt-15'>
-        <h2>Job Details</h2>
-      </Box>
+      {!jobId ? (
+        <Box>
+          <Box className='mt-25'>
+            <BackPage></BackPage>
+          </Box>
+          <Box className='mt-15'>
+            <h2>Job Details</h2>
+          </Box>
+        </Box>
+      ) : (
+        <></>
+      )}
+
       {job ? (
         <Container maxWidth='md' sx={style.jobContainer}>
           <h2 style={style.title}>{job?.Title}</h2>
@@ -90,17 +100,22 @@ export const JobDetails = () => {
               </Typography>
             </Box>
           </Box>
-          <Box className='d-flex align-center justify-center mt-40'>
-            <BaseButton
-              onClick={() => {
-                SubmitProposal();
-              }}
-              variant='contained'
-              disableElevation
-            >
-              Submit Proposal
-            </BaseButton>
-          </Box>
+
+          {user?.userTypes?.includes('seller') ? (
+            <Box className='d-flex align-center justify-center mt-40'>
+              <BaseButton
+                onClick={() => {
+                  SubmitProposal();
+                }}
+                variant='contained'
+                disableElevation
+              >
+                Submit Proposal
+              </BaseButton>
+            </Box>
+          ) : (
+            <></>
+          )}
         </Container>
       ) : (
         <Box className='center-row'>
@@ -114,7 +129,7 @@ export const JobDetails = () => {
 
 const style = {
   jobContainer: {
-    border: 1,
+    border: '1px solid #dfdfdf',
     p: 2,
     my: 4,
     borderRadius: 5
