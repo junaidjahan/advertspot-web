@@ -4,7 +4,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 /**
  * @param {import('@mui/material').TextFieldProps}
  */
-export const BaseTextField = ({ name, label, ...props }) => {
+export const BaseTextField = ({ name, label, required, ...props }) => {
   const {
     control,
     formState: { errors }
@@ -17,6 +17,7 @@ export const BaseTextField = ({ name, label, ...props }) => {
       defaultValue=''
       render={({ field }) => (
         <TextField
+          required={required}
           {...field}
           variant='outlined'
           color='primary'

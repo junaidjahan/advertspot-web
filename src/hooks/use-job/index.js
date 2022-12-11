@@ -26,6 +26,23 @@ export const useJob = () => {
       } catch {}
     }
   };
+  const getCurrentUserJobs = async () => {
+    {
+      try {
+        const userJobs = await get(`/job/user-jobs`);
+        return userJobs;
+      } catch {}
+    }
+  };
+
+  const getById = async id => {
+    {
+      try {
+        const job = await get(`/job/get-by-id/${id}`);
+        return job;
+      } catch {}
+    }
+  };
 
   const getAllCities = async () => {
     {
@@ -40,6 +57,8 @@ export const useJob = () => {
     filterType,
     saveJob,
     getAll,
-    getAllCities
+    getAllCities,
+    getById,
+    getCurrentUserJobs
   };
 };

@@ -17,18 +17,19 @@ import { gigSchema } from '~/schemas';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import { SetMealOutlined } from '@mui/icons-material';
 import { useGig } from '~/hooks/use-gig';
-import { uploadImage } from '../.../../../../services/cloudinary';
+import { uploadImage } from '../../../../services/cloudinary';
 import { useState } from 'react';
+import { useLoader } from '~/hooks/use-loader';
 
 export const CreateGig = () => {
-  const jobSteps = ['1. Post a job to the marketplace', '2. Get proposals from talent', '4. Pay for work you approve'];
+  const jobSteps = ['1. Post services through Gigs.', '2. Get Orders from Clients', '4. Get Paid'];
   const jobType = [
     { value: 'flex', label: 'Flex' },
     { value: 'banner', label: 'Banner' },
     { value: 'brochure', label: 'Brochure' },
     { value: 'digital-marketing', label: 'Digital Marketing' },
     { value: 'poster', label: 'Poster' },
-    { value: 'Flyer', label: 'Flyer' }
+    { value: 'flyer', label: 'Flyer' }
   ];
   const form = useForm({ schema: gigSchema });
   //   const { reset } = useHookForm({ defaultValues: { Title: '', Budget: '' } });
@@ -39,26 +40,40 @@ export const CreateGig = () => {
 
   const { saveGig } = useGig();
 
+  const removeImages = () => {
+    setPreviewImages([]);
+    form.setValue('Image', []);
+  };
+
+  const { openLoader, closeLoader } = useLoader();
+
   const [PreviewImages, setPreviewImages] = useState([]);
 
-  const handleSubmit = values => {
-    uploadImage(values.Image).then(imagesUrl => {
-      console.log('Images Url', imagesUrl);
-      form.setValue('Image', imagesUrl);
-      const data = { ...form.getValues() };
-      saveGig(data);
-      reset();
-    });
+  const handleSubmit = async values => {
+    openLoader();
+    uploadImage(values.Image)
+      .then(async imagesUrl => {
+        // console.log('Images Url', imagesUrl);
+        form.setValue('images', imagesUrl);
+        const data = { ...form.getValues() };
+        await saveGig(data);
+        closeLoader();
+        reset();
+        removeImages();
+      })
+      .finally(() => {
+        closeLoader();
+      });
   };
 
   const setImages = e => {
     form.setValue('Image', e.target.files);
     setPreviewImages([...e.target.files]);
-    console.log([...form.getValues().Image]);
+    // console.log([...form.getValues().Image]);
   };
 
   const getImageUrl = item => {
-    console.log(item);
+    // console.log(item);
     // const reader = new FileReader();
     // reader.readAsDataURL(item);
     const url = URL.createObjectURL(item);
@@ -73,9 +88,9 @@ export const CreateGig = () => {
           <Grid container spacing={2}>
             <Grid item xs={12} md={8} className='center-column'>
               <Box>
-                <h1 style={style.lightWeight}>Advertise with us!</h1>
+                <h1 style={style.lightWeight}>Sell with us!</h1>
                 <p style={style.pText}>
-                  The most wallet-friendly way to hire anyone, anywhere in Pakistan. It's everything you love about
+                  The most wallet-friendly way to sell services, anywhere in Pakistan. It's everything you love about
                   AdverSpot, and more.
                 </p>
                 <Box sx={style.tagLineBox}>
@@ -88,7 +103,7 @@ export const CreateGig = () => {
                   })}
                 </Box>
                 <Box sx={style.btnBox}>
-                  <h5 style={style.lightWeight}>Post a job Today!</h5>
+                  <h5 style={style.lightWeight}>Post a Gig Today!</h5>
                 </Box>
               </Box>
             </Grid>
@@ -105,22 +120,18 @@ export const CreateGig = () => {
             <Grid container spacing={2}>
               <Grid item xs={12} md={6}>
                 <Box sx={style.textField}>
-                  <BaseTextField fullWidth label='Title' name='title' />
+                  <BaseTextField required fullWidth label='Title' name='title' />
                 </Box>
               </Grid>
               <Grid item xs={12} md={6}>
                 <Box sx={style.textField}>
-                  <BaseTextField fullWidth label='Price' name='price' />
+                  <BaseTextField type='number' required fullWidth label='Price' name='price' />
                 </Box>
               </Grid>
+
               <Grid item xs={12} md={6}>
                 <Box sx={style.textField}>
-                  <BaseTextField fullWidth label='Description' name='description' />
-                </Box>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <Box sx={style.textField}>
-                  <BaseTextField fullWidth label='Quantity' name='quantity' />
+                  <BaseTextField type='number' required fullWidth label='Quantity' name='quantity' />
                 </Box>
               </Grid>
               <Grid item xs={12} md={6}>
@@ -130,7 +141,7 @@ export const CreateGig = () => {
               </Grid>
               <Grid item xs={12} md={6}>
                 <Box sx={style.textField}>
-                  <BaseTextField fullWidth label='Delivery' name='delivery' />
+                  <BaseTextField required fullWidth label='Delivery Duration' name='delivery' />
                 </Box>
               </Grid>
               <Grid item xs={12} md={6}>
@@ -139,7 +150,12 @@ export const CreateGig = () => {
                 </Box>
               </Grid>
               <Grid item xs={12} md={12}>
-                <Box sx={{ border: '1px solid grey', borderRadius: '4px' }}>
+                <Box sx={style.textField}>
+                  <BaseTextField rows={4} multiline fullWidth label='Description' name='description' />
+                </Box>
+              </Grid>
+              <Grid item xs={12} md={12}>
+                <Box sx={{ border: '1px solid #dfdfdf', borderRadius: '4px' }}>
                   {!PreviewImages.length > 0 ? (
                     <Stack
                       direction='row'
@@ -186,8 +202,7 @@ export const CreateGig = () => {
                         <Button
                           variant='outlined'
                           onClick={() => {
-                            setPreviewImages([]);
-                            form.setValue('Image', []);
+                            removeImages();
                           }}
                           color='error'
                           sx={{ mx: 1 }}

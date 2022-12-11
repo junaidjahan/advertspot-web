@@ -19,17 +19,14 @@ export const SellerNavbar = () => {
       method: () => {
         navigate('/seller/all-jobs');
       }
-    },
-    {
-      text: 'All Contracts'
     }
   ];
   const browse = [
     {
-      text: 'Project Catalogs'
-    },
-    {
-      text: 'Categories'
+      text: 'Project Catalogs',
+      method: () => {
+        navigate('/home');
+      }
     }
   ];
   const notifications = [
@@ -38,14 +35,14 @@ export const SellerNavbar = () => {
     }
   ];
   const account = [
-    {
-      text: 'Profile',
-      icon: 'person'
-    },
-    {
-      text: 'Settings',
-      icon: 'settings'
-    },
+    // {
+    //   text: 'Profile',
+    //   icon: 'person'
+    // },
+    // {
+    //   text: 'Settings',
+    //   icon: 'settings'
+    // },
     {
       text: 'Logout',
       icon: 'logout',
