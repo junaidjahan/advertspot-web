@@ -7,39 +7,49 @@ export const useChat = () => {
 
     const user = useRecoilValue(userState);
 
-    const saveMessage = async gigData => {
+    const saveMessage = async m => {
         {
             try {
-                await post('/save-message', gigData);
+                await post('/message', m);
             } catch { }
         }
     };
 
-    const getConversationById = async id => {
+    const getOrCreateConversation = async id => {
+        const data = {
+            people:[id]
+        }
         {
             try {
-                const conversation = await get(`/conversation-by-id/${id}`);
+                const conversation = await post(`/conversation/get-conversation`,data);
                 return conversation;
             } catch { }
         }
     };
 
-    const getConversations = async () => {
+    const getConversation = async () => {
         {
             try {
-                const conversations = await get(`/conversations/${id}`);
+                const conversations = await get(`conversation/get-conversations`);
                 return conversations;
             } catch { }
         }
     };
 
-    // const getById = async ()=>{
-    //     return
-    // }
+    const getMessagesByConversationId = async (id) => {
+        {
+            try {
+                const Messages = await get(`/message/${id}`);
+                return Messages;
+            } catch { }
+        }
+    };
+
 
     return {
         saveMessage,
-        getConversations,
-        getConversationById,
+        getConversation,
+        getOrCreateConversation,
+        getMessagesByConversationId,
     };
 };

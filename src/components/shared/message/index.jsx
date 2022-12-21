@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { formatDistanceToNowStrict } from 'date-fns';
 import {
   Typography,
   Grid,
@@ -13,11 +14,14 @@ import {
   Fab
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { Send } from '@mui/icons-material';
+import { Margin, Send } from '@mui/icons-material';
 import { useParams } from 'react-router-dom';
 import { useChat } from '~/hooks';
 import { useLoader } from '~/hooks/use-loader';
-import Pusher from 'pusher - js';
+import Pusher from 'pusher-js';
+import { useRecoilState } from 'recoil';
+import { userState } from '~/state';
+import { borderRadius } from '@mui/system';
 
 const useStyles = makeStyles({
   table: {
@@ -28,10 +32,47 @@ const useStyles = makeStyles({
     height: '100vh'
   },
   headBG: {
-    backgroundColor: '#e0e0e0'
+    backgroundColor: '#e0e0e0',
+    margin:'5px',
+    padding:'10px'
   },
   borderRight500: {
     borderRight: '1px solid #e0e0e0'
+  },
+  senderBox: {
+    backgroundColor: '#ebdd',
+    borderRadius: '10px',
+    textAlign:'right',
+    padding:'10px',
+    margin:'5px',
+    display:'inline-grid',
+     
+  },
+  receiverBox: {
+    backgroundColor: '#dfdfdf',
+    borderRadius: '10px',
+    padding: '10px',
+    margin: '5px',
+    display: 'inline-grid',
+
+  },
+  right:{
+    textAlign:'right',
+  },
+  left:{
+    textAlign: 'left',
+  },
+  back:{
+    backgroundColor:'#dfdfdf',
+    cursor: 'pointer',
+    
+  },
+  simple: {
+    cursor: 'pointer',
+    '&:hover':{
+      backgroundColor: '#efefef',
+    }
+
   },
   messageArea: {
     height: '70vh',
@@ -42,134 +83,143 @@ const useStyles = makeStyles({
 export default function Messages() {
   let { id } = useParams();
   const classes = useStyles();
+  const [conversations, setConversations] = useState([]);
+  const [conversationId, setConversationId] = useState(null);
   const [message, setMessage] = useState();
+  const [receiverId,setReceiverId] = useState(null);
   const [messages, setMessages] = useState([]);
   const { openLoader, closeLoader } = useLoader();
-  const {getConversationById,getConversations} = useChat();
-
-  
-
-  const myId = 1;
+  const { getConversation, getOrCreateConversation, getMessagesByConversationId, saveMessage } = useChat();
+  const user = useRecoilState(userState);
+  const scrollRef = useRef(null);
 
   useEffect(() => {
-   
-    // if (conversationID) {
+   if(id){
+    getorCreate();
+   }
+   else{
+     getMyConversations();
+   }
+    
+  },[]);
 
-      const pusher = new Pusher('8446967bdc196e48bfbc', {
-        cluster: 'ap2',
-        encrypted: true,
-      });
+  useEffect(() => {
+    console.log('pusher');
+    if (conversationId) {
 
-    const channel = pusher.subscribe("63a2f48be2370bee5f0a3c34");
-      channel.bind('message-received', (data) => {
-        // setMessages([...messages, data]);
-        // console.log('array', messages);
-        console.log('pusher', data);
-      });
+    const pusher = new Pusher('48573c6fb91ca49c9d45', {
+      cluster: 'ap2',
+      encrypted: true
+    });
 
-      // const scrollMessagesToBottom = () => {
-      //   if (scrollRef.current) {
-      //     scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-      //   }
-      // };
-      // scrollMessagesToBottom();
+    const channel = pusher.subscribe(conversationId);
+    channel.bind('message-received', data => {
+      setMessages([...messages, data]);
+      console.log('pusher new ', data);
+      console.log(messages);
+    });
 
-      return () => {
-        pusher.unsubscribe(conversationID._id);
-      };
-    // }
+    const scrollMessagesToBottom = () => {
+      if (scrollRef.current) {
+        scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+      }
+    };
+    scrollMessagesToBottom();
+
+    return () => {
+      pusher.unsubscribe(conversationId);
+    };
+    }
   }, [messages]);
 
-  const data = [
-    {
-      id: 1,
-      senderId: 1,
-      text: 'Hi',
-      time: new Date().getDate()
-    },
-    {
-      id: 2,
-      senderId: 2,
-      text: 'Hello How Are You',
-      time: new Date().getDate()
-    },
-    {
-      id: 3,
-      senderId: 1,
-      text: 'I m Fine',
-      time: new Date().getDate()
-    },
-    {
-      id: 4,
-      senderId: 1,
-      text: 'Hello How Are You',
-      time: new Date().getDate()
-    },
-    {
-      id: 5,
-      senderId: 2,
-      text: 'Same',
-      time: new Date().getDate()
+  useEffect(() => {
+    // if(cid){
+    //   getMessages(cid);
+    //   console.log("get messages from url cid", user);
+    // }
+    if (conversationId) {
+      getMessages(conversationId);
+      console.log('get messages from conversationId', user);
     }
-  ];
+  }, [conversationId]);
 
-  const getMessagesById = ()=>{
+  const getMessages = id => {
     openLoader();
-    getConversationById(id)
+    getMessagesByConversationId(id)
       .then(res => {
-        console.log(res);
-        setGig(res);
+        console.log("messags",res);
+        setMessages(res);
       })
       .finally(() => {
         closeLoader();
       });
-  }
-  const getConversation =() =>{
+  };
+
+  const getMyConversations = () => {
     openLoader();
-    getConversations()
+    getConversation()
       .then(res => {
-        console.log(res);
-        setGig(res);
+        setConversations(res.data);
       })
       .finally(() => {
         closeLoader();
       });
+  };
+
+  const getorCreate = () => {
+    openLoader();
+    getOrCreateConversation(id)
+      .then(res => {
+        getMyConversations();
+        console.log(res);
+        setReceiver(res.data[0].people);
+        setConversationId(res.data[0]._id);
+        getMessages(res.data[0]._id);
+      })
+      
+  };
+
+  const setReceiver =(item) =>{
+    console.log(item, user[0].id);
+    const r = item.filter(i => i._id != user[0].id);
+    setReceiverId(r[0]._id);
   }
 
   const handleSendMessage = () => {
-    const id = messages.at(-1).id + 1;
-    const s = messages.at(-1) == 1 ? 2 : 1;
     const m = {
-      id: id,
-      senderId: s,
-      text: message,
-      time: new Date().getDate()
-    };
-    messages.push(m);
+      conversationId: conversationId,
+      message: message,
+      sender: user[0].id,
+      receiver: receiverId
+    }
+    console.log(m);
+    saveMessage(m);
     setMessage('');
   };
-  useEffect(() => { 
-    getMessagesById();
-   }, [id]);
-  useEffect(() => {console.log("Messages","id",id)}, [messages]);
+
+  const getName = item => {
+    const p = item.filter(i => i._id != user[0].id);
+    return p[0]?.firstName + ' ' + p[0]?.lastName;
+  };
 
   return (
     <div>
       <Grid container>
         <Grid item xs={12}>
-          <Typography variant='h5' className='header-message'>
-            Chat
+          <Typography variant='h5' className={classes.headBG}>
+            Messages
           </Typography>
         </Grid>
       </Grid>
-      <Grid container component={Paper} className={classes.chatSection}>
-        <Grid item xs={3} className={classes.borderRight500}>
+      <Grid container  component={Paper} className={classes.chatSection}>
+        <Grid item xs={3}  className={classes.borderRight500}>
           <List>
             <ListItem button key='RemySharp'>
               <ListItemIcon>
                 <Avatar alt='Remy Sharp' src='https://material-ui.com/static/images/avatar/1.jpg' />
               </ListItemIcon>
-              <ListItemText primary='John Wick'></ListItemText>
+              <ListItemText primary={user[0]?.firstName + ' ' + user[0]?.lastName}></ListItemText>
+              {/* <ListItemText secondary='online' align='right'></ListItemText> */}
             </ListItem>
           </List>
           <Divider />
@@ -178,48 +228,40 @@ export default function Messages() {
           </Grid>
           <Divider />
           <List>
-            <ListItem button key='RemySharp'>
-              <ListItemIcon>
-                <Avatar alt='Remy Sharp' src='https://material-ui.com/static/images/avatar/1.jpg' />
-              </ListItemIcon>
-              <ListItemText primary='Remy Sharp'>Remy Sharp</ListItemText>
-              <ListItemText secondary='online' align='right'></ListItemText>
-            </ListItem>
-            <ListItem button key='Alice'>
-              <ListItemIcon>
-                <Avatar alt='Alice' src='https://material-ui.com/static/images/avatar/3.jpg' />
-              </ListItemIcon>
-              <ListItemText primary='Alice'>Alice</ListItemText>
-            </ListItem>
-            <ListItem button key='CindyBaker'>
-              <ListItemIcon>
-                <Avatar alt='Cindy Baker' src='https://material-ui.com/static/images/avatar/2.jpg' />
-              </ListItemIcon>
-              <ListItemText primary='Cindy Baker'>Cindy Baker</ListItemText>
-            </ListItem>
+            {conversations.map(conversation => (
+              <ListItem className={conversation._id == conversationId ? classes.back : classes.simple}  key={conversation._id} onClick={() => {setConversationId(conversation._id);setReceiver(conversation.people)}}>
+                <ListItemIcon>
+                  <Avatar alt='Remy Sharp' src='https://material-ui.com/static/images/avatar/1.jpg' />
+                </ListItemIcon>
+                <ListItemText primary={getName(conversation.people)}></ListItemText>
+              </ListItem>
+            ))}
           </List>
         </Grid>
-        <Grid item xs={9}>
-          <List className={classes.messageArea}>
+       
+        <Grid  item xs={9}>
+         
+            <List ref={scrollRef} scrollableNodeProps={{ ref: scrollRef }}  className={classes.messageArea}>
             {messages.map(message => (
-              <ListItem key={message.id}>
+              <ListItem key={message._id}>
                 <Grid container>
                   <Grid item xs={12}>
-                    <ListItemText
-                      align={message.senderId == myId ? 'right' : 'left'}
-                      primary={message.text}
-                    ></ListItemText>
+                    <div className={message.sender._id == user[0]?.id ? classes.right : classes.left}>
+                      <div className={message.sender._id == user[0]?.id ? classes.senderBox : classes.receiverBox}>
+                        <Typography>{message.message}</Typography>
+                        <Typography variant='caption'>{formatDistanceToNowStrict(new Date(message.createdAt), {
+                          addSuffix: true,
+                        })}</Typography>
+                      </div>
+                  </div>
+                    
                   </Grid>
-                  <Grid item xs={12}>
-                    <ListItemText
-                      align={message.senderId == myId ? 'right' : 'left'}
-                      secondary={message.time}
-                    ></ListItemText>
-                  </Grid>
+                  <Grid item xs={12}></Grid>
                 </Grid>
               </ListItem>
             ))}
           </List>
+     
           <Divider />
           <Grid container style={{ padding: '5px' }}>
             <Grid item xs={11}>
@@ -227,7 +269,8 @@ export default function Messages() {
                 id='outlined-basic-email'
                 label='Type Something'
                 fullWidth
-                onChange={e => setMessage(e.target.value)}
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
               />
             </Grid>
             <Grid xs={1} align='right'>
