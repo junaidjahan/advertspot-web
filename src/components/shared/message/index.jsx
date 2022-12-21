@@ -14,6 +14,10 @@ import {
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Send } from '@mui/icons-material';
+import { useParams } from 'react-router-dom';
+import { useChat } from '~/hooks';
+import { useLoader } from '~/hooks/use-loader';
+import Pusher from 'pusher - js';
 
 const useStyles = makeStyles({
   table: {
@@ -36,11 +40,45 @@ const useStyles = makeStyles({
 });
 
 export default function Messages() {
+  let { id } = useParams();
   const classes = useStyles();
   const [message, setMessage] = useState();
   const [messages, setMessages] = useState([]);
+  const { openLoader, closeLoader } = useLoader();
+  const {getConversationById,getConversations} = useChat();
+
+  
 
   const myId = 1;
+
+  useEffect(() => {
+   
+    // if (conversationID) {
+
+      const pusher = new Pusher('8446967bdc196e48bfbc', {
+        cluster: 'ap2',
+        encrypted: true,
+      });
+
+    const channel = pusher.subscribe("63a2f48be2370bee5f0a3c34");
+      channel.bind('message-received', (data) => {
+        // setMessages([...messages, data]);
+        // console.log('array', messages);
+        console.log('pusher', data);
+      });
+
+      // const scrollMessagesToBottom = () => {
+      //   if (scrollRef.current) {
+      //     scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+      //   }
+      // };
+      // scrollMessagesToBottom();
+
+      return () => {
+        pusher.unsubscribe(conversationID._id);
+      };
+    // }
+  }, [messages]);
 
   const data = [
     {
@@ -75,6 +113,29 @@ export default function Messages() {
     }
   ];
 
+  const getMessagesById = ()=>{
+    openLoader();
+    getConversationById(id)
+      .then(res => {
+        console.log(res);
+        setGig(res);
+      })
+      .finally(() => {
+        closeLoader();
+      });
+  }
+  const getConversation =() =>{
+    openLoader();
+    getConversations()
+      .then(res => {
+        console.log(res);
+        setGig(res);
+      })
+      .finally(() => {
+        closeLoader();
+      });
+  }
+
   const handleSendMessage = () => {
     const id = messages.at(-1).id + 1;
     const s = messages.at(-1) == 1 ? 2 : 1;
@@ -87,7 +148,10 @@ export default function Messages() {
     messages.push(m);
     setMessage('');
   };
-  useEffect(() => {}, [messages]);
+  useEffect(() => { 
+    getMessagesById();
+   }, [id]);
+  useEffect(() => {console.log("Messages","id",id)}, [messages]);
 
   return (
     <div>

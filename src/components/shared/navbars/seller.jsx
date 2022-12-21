@@ -71,7 +71,7 @@ export const SellerNavbar = () => {
               <img src='/logo.png' width={50} style={style.image} />
               <BaseMenu menuItems={jobs} buttonText='Jobs' />
               <BaseMenu menuItems={browse} buttonText='Browse' />
-              <BaseButton size='small' color='black' sx={style.messages}>
+              <BaseButton onClick={() => navigate('/seller/messages')} size='small' color='black' sx={style.messages}>
                 Messages
               </BaseButton>
             </Box>

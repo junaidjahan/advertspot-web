@@ -82,7 +82,7 @@ export const useAxios = () => {
     if ('data' in response) {
       return response.data;
     } else {
-      if ([401, 403].includes(+response.status) && auth?.accessToken) {
+      if ([401, 403].includes(+response.status) && auth?.accessToken) { 
         logout();
       }
       const error = response.response?.data ?? 'Something went wrong.';

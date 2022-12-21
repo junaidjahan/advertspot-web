@@ -56,7 +56,7 @@ export const GigDetails = () => {
                 <h2 style={{ fontWeight: '500', fontSize: 18, color: 'grey' }}>
                   {gig.user?.firstName} {gig.user?.lastName}
                 </h2>
-                <BaseButton variant='outlined' className='mt-10'>
+                <BaseButton onClick={() => navigate("/seller/messages", { replace: true })} variant='outlined' className='mt-10'>
                   {' '}
                   Message
                 </BaseButton>

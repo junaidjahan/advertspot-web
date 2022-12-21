@@ -54,6 +54,8 @@ export const Router = () => {
           <Route path='dashboard' element={<BuyerDashboard />} />
           <Route path='post-job' element={<PostJob />} />
           <Route path='proposals/:id' element={<AllProposals />} />
+          <Route path='messages/:id' element={<Messages />} />
+          <Route path='messages' element={<Messages />} />
           <Route path='proposals/proposal-details/:id' element={<ProposalDetails />} />
         </Route>
         <Route path='seller/*' element={<SellerLayout />}>
@@ -62,6 +64,7 @@ export const Router = () => {
           <Route path='dashboard' element={<SellerDashboard />} />
           <Route path='creategig' element={<CreateGig />} />
           <Route path='gig/get-by-id/:id' element={<GigDetails />} />
+          <Route path='messages/:id' element={<Messages />} />
           <Route path='messages' element={<Messages />} />
           <Route path='submit-proposal/:id' element={<CreateProposal />} />
         </Route>
