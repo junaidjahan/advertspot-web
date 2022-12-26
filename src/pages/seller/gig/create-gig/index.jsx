@@ -8,10 +8,11 @@ import {
   Autocomplete,
   TextField,
   ImageListItem,
-  ImageList
+  ImageList,
+  InputAdornment
 } from '@mui/material';
 import { BaseButton, BaseCard, BaseForm, BaseSelect, BaseTextField } from '~/components';
-import { useForm, useJob } from '~/hooks';
+import { useForm, useJob, useSnackbar } from '~/hooks';
 import { useForm as useHookForm } from 'react-hook-form';
 import { gigSchema } from '~/schemas';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
@@ -20,6 +21,7 @@ import { useGig } from '~/hooks/use-gig';
 import { uploadImage } from '../../../../services/cloudinary';
 import { useState } from 'react';
 import { useLoader } from '~/hooks/use-loader';
+import { useEffect } from 'react';
 
 export const CreateGig = () => {
   const jobSteps = ['1. Post services through Gigs.', '2. Get Orders from Clients', '4. Get Paid'];
@@ -27,9 +29,21 @@ export const CreateGig = () => {
     { value: 'flex', label: 'Flex' },
     { value: 'banner', label: 'Banner' },
     { value: 'brochure', label: 'Brochure' },
+    { value: 'billboard', label: 'Billboard' },
     { value: 'digital-marketing', label: 'Digital Marketing' },
     { value: 'poster', label: 'Poster' },
     { value: 'flyer', label: 'Flyer' }
+  ];
+  const sizeType = [
+    { value: 'inch', label: 'Inches' },
+    { value: 'foot', label: 'Feets' }
+  ];
+  const durationType = [
+    { value: 'hours', label: 'Hours' },
+    { value: 'days', label: 'Days' },
+    { value: 'weeks', label: 'Weeks' },
+    { value: 'months', label: 'Months' },
+    { value: 'years', label: 'Years' }
   ];
   const form = useForm({ schema: gigSchema });
   //   const { reset } = useHookForm({ defaultValues: { Title: '', Budget: '' } });
@@ -39,7 +53,7 @@ export const CreateGig = () => {
   } = form;
 
   const { saveGig } = useGig();
-
+  const { open } = useSnackbar();
   const removeImages = () => {
     setPreviewImages([]);
     form.setValue('Image', []);
@@ -57,6 +71,7 @@ export const CreateGig = () => {
         form.setValue('images', imagesUrl);
         const data = { ...form.getValues() };
         await saveGig(data);
+        open('Gig created succesfully!');
         closeLoader();
         reset();
         removeImages();
@@ -125,7 +140,16 @@ export const CreateGig = () => {
               </Grid>
               <Grid item xs={12} md={6}>
                 <Box sx={style.textField}>
-                  <BaseTextField type='number' required fullWidth label='Price' name='price' />
+                  <BaseTextField
+                    InputProps={{
+                      endAdornment: <InputAdornment position='start'>Pkr</InputAdornment>
+                    }}
+                    type='number'
+                    required
+                    fullWidth
+                    label='Price'
+                    name='price'
+                  />
                 </Box>
               </Grid>
 
@@ -136,19 +160,40 @@ export const CreateGig = () => {
               </Grid>
               <Grid item xs={12} md={6}>
                 <Box sx={style.textField}>
-                  <BaseTextField fullWidth label='Dimension' name='dimensions' />
-                </Box>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <Box sx={style.textField}>
-                  <BaseTextField required fullWidth label='Delivery Duration' name='delivery' />
-                </Box>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <Box sx={style.textField}>
                   <BaseSelect fullWidth required={true} label='Type' options={jobType} name='category' />
                 </Box>
               </Grid>
+              <Grid item xs={12} md={6}>
+                <Box sx={style.textField}>
+                  <BaseTextField type='number' fullWidth label='Height' name='height' />
+                </Box>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Box sx={style.textField}>
+                  <BaseSelect fullWidth label='Unit' options={sizeType} name='unit' />
+                </Box>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Box sx={style.textField}>
+                  <BaseTextField type='number' fullWidth label='Width' name='width' />
+                </Box>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Box sx={style.textField}>
+                  <BaseSelect fullWidth label='Unit' options={sizeType} name='unit' />
+                </Box>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Box sx={style.textField}>
+                  <BaseTextField type='number' required fullWidth label='Delivery' name='delivery' />
+                </Box>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Box sx={style.textField}>
+                  <BaseSelect fullWidth label='Duration' options={durationType} name='duration' />
+                </Box>
+              </Grid>
+
               <Grid item xs={12} md={12}>
                 <Box sx={style.textField}>
                   <BaseTextField rows={4} multiline fullWidth label='Description' name='description' />

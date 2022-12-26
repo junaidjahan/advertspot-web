@@ -31,7 +31,6 @@ export const CreateProposal = () => {
         setJob(res);
       })
       .finally(() => {
-        console.log('hello');
         closeLoader();
       });
   };
