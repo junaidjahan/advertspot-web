@@ -11,6 +11,8 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 
 import './swipeStyle.css';
+import { useRecoilState } from 'recoil';
+import { userState } from '~/state';
 
 export const GigDetails = () => {
   let { id } = useParams();
@@ -18,6 +20,7 @@ export const GigDetails = () => {
   const { openLoader, closeLoader } = useLoader();
   const navigate = useNavigate();
   const { getGigById } = useGig();
+  const user = useRecoilState(userState);
 
   const getById = () => {
     openLoader();
@@ -56,14 +59,15 @@ export const GigDetails = () => {
                 <h2 style={{ fontWeight: '500', fontSize: 18, color: 'grey' }}>
                   {gig.user?.firstName} {gig.user?.lastName}
                 </h2>
-                <BaseButton
+                {gig.user?._id !== user[0].id && <BaseButton
                   onClick={() => navigate(`/seller/messages/${gig.user?._id}`, { replace: true })}
                   variant='outlined'
                   className='mt-10'
                 >
                   {' '}
                   Message
-                </BaseButton>
+                </BaseButton>}
+               
               </Box>
             </Container>
           </Grid>

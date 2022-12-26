@@ -62,6 +62,7 @@ export const CreateGig = () => {
   const { openLoader, closeLoader } = useLoader();
 
   const [PreviewImages, setPreviewImages] = useState([]);
+  
 
   const handleSubmit = async values => {
     openLoader();
@@ -82,15 +83,23 @@ export const CreateGig = () => {
   };
 
   const setImages = e => {
-    form.setValue('Image', e.target.files);
-    setPreviewImages([...e.target.files]);
-    // console.log([...form.getValues().Image]);
+    var arr =[]; form.getValues().Image;
+    if(form.getValues().Image){
+      arr.push(...form.getValues().Image);
+    }
+   
+    arr.push(...e.target.files);
+    console.log(arr);
+    form.setValue('Image',arr);
+    setPreviewImages(arr);
+    console.log("value in image var",form.getValues().Image);
   };
 
   const getImageUrl = item => {
     // console.log(item);
     // const reader = new FileReader();
     // reader.readAsDataURL(item);
+    console.log(item);
     const url = URL.createObjectURL(item);
 
     return `${url}?w=100&h=100&fit=crop&auto=format`;
