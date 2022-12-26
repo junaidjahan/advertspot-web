@@ -54,9 +54,13 @@ export const GigDetails = () => {
               >
                 <Avatar alt='Remy Sharp' src='/avatar2.png' sx={{ width: 120, height: 120 }} />
                 <h2 style={{ fontWeight: '500', fontSize: 18, color: 'grey' }}>
-                  {gig.user?.firstName} {gig.user?.lastName} 
+                  {gig.user?.firstName} {gig.user?.lastName}
                 </h2>
-                <BaseButton onClick={() => navigate(`/seller/messages/${gig.user?._id}`, { replace: true })} variant='outlined' className='mt-10'>
+                <BaseButton
+                  onClick={() => navigate(`/seller/messages/${gig.user?._id}`, { replace: true })}
+                  variant='outlined'
+                  className='mt-10'
+                >
                   {' '}
                   Message
                 </BaseButton>
@@ -98,7 +102,7 @@ export const GigDetails = () => {
                     <Typography variant='p' sx={style.dimesions}>
                       Dimensions:
                     </Typography>{' '}
-                    {gig.gig?.dimensions}
+                    {gig.gig?.height} <p style={style.by}>by</p> {gig.gig?.width}
                   </Typography>
                 </Grid>
                 <Grid item xs={12} md={6}>
@@ -149,6 +153,11 @@ const style = {
   type: {
     color: '#9B57F2',
     fontWeight: '500'
+  },
+  by: {
+    color: '#9B57F2',
+    marginLeft: '8px',
+    marginRight: '8px'
   },
   locationTitle: {
     fontSize: 15

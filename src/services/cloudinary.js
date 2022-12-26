@@ -26,7 +26,7 @@ export const uploadImage = async images => {
           .catch(err => console.log(err));
       }
     } else {
-      data.append('file', images?.at(0));
+      data.append('file', images[0]);
       fetch('https://api.cloudinary.com/v1_1/dwdozndtq/image/upload', {
         method: 'post',
         body: data
