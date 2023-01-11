@@ -83,12 +83,13 @@ export const SellerDashboard = () => {
           </Box>
           <Box>
             <BaseButton
+              className='ml-10'
               variant='outlined'
               onClick={() => {
                 navigate('/home');
               }}
             >
-              Browse Catalog
+              My Gigs
             </BaseButton>
             <BaseButton
               onClick={() => {

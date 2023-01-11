@@ -19,7 +19,8 @@ import {
   SellerDashboard,
   Signup,
   GigDetails,
-  ProposalDetails
+  ProposalDetails,
+  GetSellerGigs
 } from '~/pages';
 import { CreateProposal } from '~/pages/seller/proposal/create-proposal';
 
@@ -64,6 +65,7 @@ export const Router = () => {
           <Route path='dashboard' element={<SellerDashboard />} />
           <Route path='creategig' element={<CreateGig />} />
           <Route path='gig/get-by-id/:id' element={<GigDetails />} />
+          <Route path='gig/get-by-seller-id/:id' element={<GetSellerGigs />} />
           <Route path='messages/:id' element={<Messages />} />
           <Route path='messages' element={<Messages />} />
           <Route path='submit-proposal/:id' element={<CreateProposal />} />

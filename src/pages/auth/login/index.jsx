@@ -21,7 +21,7 @@ export const Login = () => {
       <Box sx={style.loginForm}>
         <Box sx={{ textAlign: 'center' }}>
           <h2 className='darkGrey' style={style.title}>
-            Welcome Back
+            Welcome!
           </h2>
         </Box>
         <Grid container justifyContent='center' alignItems='center'>

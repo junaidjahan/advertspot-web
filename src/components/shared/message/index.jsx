@@ -33,8 +33,8 @@ const useStyles = makeStyles({
   },
   headBG: {
     backgroundColor: '#e0e0e0',
-    margin:'5px',
-    padding:'10px'
+    margin: '5px',
+    padding: '10px'
   },
   borderRight500: {
     borderRight: '1px solid #e0e0e0'
@@ -42,37 +42,33 @@ const useStyles = makeStyles({
   senderBox: {
     backgroundColor: '#ebdd',
     borderRadius: '10px',
-    textAlign:'right',
-    padding:'10px',
-    margin:'5px',
-    display:'inline-grid',
-     
+    textAlign: 'right',
+    padding: '10px',
+    margin: '5px',
+    display: 'inline-grid'
   },
   receiverBox: {
     backgroundColor: '#dfdfdf',
     borderRadius: '10px',
     padding: '10px',
     margin: '5px',
-    display: 'inline-grid',
-
+    display: 'inline-grid'
   },
-  right:{
-    textAlign:'right',
+  right: {
+    textAlign: 'right'
   },
-  left:{
-    textAlign: 'left',
+  left: {
+    textAlign: 'left'
   },
-  back:{
-    backgroundColor:'#dfdfdf',
-    cursor: 'pointer',
-    
+  back: {
+    backgroundColor: '#dfdfdf',
+    cursor: 'pointer'
   },
   simple: {
     cursor: 'pointer',
-    '&:hover':{
-      backgroundColor: '#efefef',
+    '&:hover': {
+      backgroundColor: '#efefef'
     }
-
   },
   messageArea: {
     height: '70vh',
@@ -86,7 +82,7 @@ export default function Messages() {
   const [conversations, setConversations] = useState([]);
   const [conversationId, setConversationId] = useState(null);
   const [message, setMessage] = useState();
-  const [receiverId,setReceiverId] = useState(null);
+  const [receiverId, setReceiverId] = useState(null);
   const [messages, setMessages] = useState([]);
   const { openLoader, closeLoader } = useLoader();
   const { getConversation, getOrCreateConversation, getMessagesByConversationId, saveMessage } = useChat();
@@ -94,41 +90,38 @@ export default function Messages() {
   const scrollRef = useRef(null);
 
   useEffect(() => {
-   if(id){
-    getorCreate();
-   }
-   else{
-     getMyConversations();
-   }
-    
-  },[]);
+    if (id) {
+      getorCreate();
+    } else {
+      getMyConversations();
+    }
+  }, []);
 
   useEffect(() => {
     console.log('pusher');
     if (conversationId) {
+      const pusher = new Pusher('48573c6fb91ca49c9d45', {
+        cluster: 'ap2',
+        encrypted: true
+      });
 
-    const pusher = new Pusher('48573c6fb91ca49c9d45', {
-      cluster: 'ap2',
-      encrypted: true
-    });
+      const channel = pusher.subscribe(conversationId);
+      channel.bind('message-received', data => {
+        setMessages([...messages, data]);
+        console.log('pusher new ', data);
+        console.log(messages);
+      });
 
-    const channel = pusher.subscribe(conversationId);
-    channel.bind('message-received', data => {
-      setMessages([...messages, data]);
-      console.log('pusher new ', data);
-      console.log(messages);
-    });
+      const scrollMessagesToBottom = () => {
+        if (scrollRef.current) {
+          scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+        }
+      };
+      scrollMessagesToBottom();
 
-    const scrollMessagesToBottom = () => {
-      if (scrollRef.current) {
-        scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-      }
-    };
-    scrollMessagesToBottom();
-
-    return () => {
-      pusher.unsubscribe(conversationId);
-    };
+      return () => {
+        pusher.unsubscribe(conversationId);
+      };
     }
   }, [messages]);
 
@@ -147,7 +140,7 @@ export default function Messages() {
     openLoader();
     getMessagesByConversationId(id)
       .then(res => {
-        console.log("messags",res);
+        console.log('messags', res);
         setMessages(res);
       })
       .finally(() => {
@@ -168,22 +161,20 @@ export default function Messages() {
 
   const getorCreate = () => {
     openLoader();
-    getOrCreateConversation(id)
-      .then(res => {
-        getMyConversations();
-        console.log(res);
-        setReceiver(res.data[0].people);
-        setConversationId(res.data[0]._id);
-        getMessages(res.data[0]._id);
-      })
-      
+    getOrCreateConversation(id).then(res => {
+      getMyConversations();
+      console.log(res);
+      setReceiver(res.data[0].people);
+      setConversationId(res.data[0]._id);
+      getMessages(res.data[0]._id);
+    });
   };
 
-  const setReceiver =(item) =>{
+  const setReceiver = item => {
     console.log(item, user[0].id);
     const r = item.filter(i => i._id != user[0].id);
     setReceiverId(r[0]._id);
-  }
+  };
 
   const handleSendMessage = () => {
     const m = {
@@ -191,7 +182,7 @@ export default function Messages() {
       message: message,
       sender: user[0].id,
       receiver: receiverId
-    }
+    };
     console.log(m);
     saveMessage(m);
     setMessage('');
@@ -211,8 +202,8 @@ export default function Messages() {
           </Typography>
         </Grid>
       </Grid>
-      <Grid container  component={Paper} className={classes.chatSection}>
-        <Grid item xs={3}  className={classes.borderRight500}>
+      <Grid container component={Paper} className={classes.chatSection}>
+        <Grid item xs={3} className={classes.borderRight500}>
           <List>
             <ListItem button key='RemySharp'>
               <ListItemIcon>
@@ -229,7 +220,14 @@ export default function Messages() {
           <Divider />
           <List>
             {conversations.map(conversation => (
-              <ListItem className={conversation._id == conversationId ? classes.back : classes.simple}  key={conversation._id} onClick={() => {setConversationId(conversation._id);setReceiver(conversation.people)}}>
+              <ListItem
+                className={conversation._id == conversationId ? classes.back : classes.simple}
+                key={conversation._id}
+                onClick={() => {
+                  setConversationId(conversation._id);
+                  setReceiver(conversation.people);
+                }}
+              >
                 <ListItemIcon>
                   <Avatar alt='Remy Sharp' src='https://material-ui.com/static/images/avatar/1.jpg' />
                 </ListItemIcon>
@@ -238,10 +236,9 @@ export default function Messages() {
             ))}
           </List>
         </Grid>
-       
-        <Grid  item xs={9}>
-         
-            <List ref={scrollRef} scrollableNodeProps={{ ref: scrollRef }}  className={classes.messageArea}>
+
+        <Grid item xs={9}>
+          <List ref={scrollRef} scrollableNodeProps={{ ref: scrollRef }} className={classes.messageArea}>
             {messages.map(message => (
               <ListItem key={message._id}>
                 <Grid container>
@@ -249,19 +246,20 @@ export default function Messages() {
                     <div className={message.sender._id == user[0]?.id ? classes.right : classes.left}>
                       <div className={message.sender._id == user[0]?.id ? classes.senderBox : classes.receiverBox}>
                         <Typography>{message.message}</Typography>
-                        <Typography variant='caption'>{formatDistanceToNowStrict(new Date(message.createdAt), {
-                          addSuffix: true,
-                        })}</Typography>
+                        <Typography variant='caption'>
+                          {formatDistanceToNowStrict(new Date(message.createdAt), {
+                            addSuffix: true
+                          })}
+                        </Typography>
                       </div>
-                  </div>
-                    
+                    </div>
                   </Grid>
                   <Grid item xs={12}></Grid>
                 </Grid>
               </ListItem>
             ))}
           </List>
-     
+
           <Divider />
           <Grid container style={{ padding: '5px' }}>
             <Grid item xs={11}>
@@ -270,7 +268,7 @@ export default function Messages() {
                 label='Type Something'
                 fullWidth
                 value={message}
-                onChange={(e) => setMessage(e.target.value)}
+                onChange={e => setMessage(e.target.value)}
               />
             </Grid>
             <Grid xs={1} align='right'>
