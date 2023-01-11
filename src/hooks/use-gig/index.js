@@ -30,6 +30,15 @@ export const useGig = () => {
     }
   };
 
+  const getGigBySellerId = async (id, filter) => {
+    {
+      try {
+        const gigs = await get(`/gig/get-by-sellerId/${id}?filter=${JSON.stringify(filter)}`);
+        return gigs;
+      } catch {}
+    }
+  };
+
   const getAll = async filter => {
     {
       try {
@@ -47,6 +56,7 @@ export const useGig = () => {
     saveGig,
     getAll,
     getGigById,
+    getGigBySellerId,
     filterType
   };
 };
