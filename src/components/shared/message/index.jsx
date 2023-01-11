@@ -29,7 +29,7 @@ const useStyles = makeStyles({
   },
   chatSection: {
     width: '100%',
-    height: '100vh'
+    height: '100%'
   },
   headBG: {
     backgroundColor: '#e0e0e0',
@@ -37,7 +37,8 @@ const useStyles = makeStyles({
     padding:'10px'
   },
   borderRight500: {
-    borderRight: '1px solid #e0e0e0'
+    borderRight: '1px solid #e0e0e0',
+    height: '83vh',
   },
   senderBox: {
     backgroundColor: '#ebdd',
@@ -77,7 +78,16 @@ const useStyles = makeStyles({
   messageArea: {
     height: '70vh',
     overflowY: 'auto'
-  }
+  },
+  noconversation:{
+    display:'flex',
+    justifyItems:'center',
+    justifyContent:'center',
+    textAlign: 'center',
+    alignItems: 'center',
+    height:'100%'
+
+  },
 });
 
 export default function Messages() {
@@ -186,16 +196,24 @@ export default function Messages() {
   }
 
   const handleSendMessage = () => {
-    const m = {
-      conversationId: conversationId,
-      message: message,
-      sender: user[0].id,
-      receiver: receiverId
+    if(message){
+      const m = {
+        conversationId: conversationId,
+        message: message,
+        sender: user[0].id,
+        receiver: receiverId
+      }
+      console.log(m);
+      saveMessage(m);
+      setMessage('');
     }
-    console.log(m);
-    saveMessage(m);
-    setMessage('');
+    
   };
+  const handleKeyPress = (e) => {
+    if(e.key === 'Enter'){
+      handleSendMessage();
+    }
+  }
 
   const getName = item => {
     const p = item.filter(i => i._id != user[0].id);
@@ -216,7 +234,7 @@ export default function Messages() {
           <List>
             <ListItem button key='RemySharp'>
               <ListItemIcon>
-                <Avatar alt='Remy Sharp' src='https://material-ui.com/static/images/avatar/1.jpg' />
+                <Avatar alt='Remy Sharp' src='https://scontent.flhe10-1.fna.fbcdn.net/v/t1.6435-9/185321622_257099689476329_3208790035830364121_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=09cbfe&_nc_eui2=AeF7L40Gr-dStVjurcG0ROhXDwOEVPEqS7APA4RU8SpLsLiC6q80244n_Ij5lNmBFGu6fdOrxYPIFiRCnkEXUzcn&_nc_ohc=Dl0ZhijnvOsAX_INvZ7&_nc_ht=scontent.flhe10-1.fna&oh=00_AfDUzf-IYNIF73iGjhw64yrKAAbkvtkrMvgNbAj3cdVhOA&oe=63E68306' />
               </ListItemIcon>
               <ListItemText primary={user[0]?.firstName + ' ' + user[0]?.lastName}></ListItemText>
               {/* <ListItemText secondary='online' align='right'></ListItemText> */}
@@ -231,17 +249,15 @@ export default function Messages() {
             {conversations.map(conversation => (
               <ListItem className={conversation._id == conversationId ? classes.back : classes.simple}  key={conversation._id} onClick={() => {setConversationId(conversation._id);setReceiver(conversation.people)}}>
                 <ListItemIcon>
-                  <Avatar alt='Remy Sharp' src='https://material-ui.com/static/images/avatar/1.jpg' />
+                  <Avatar alt='Remy Sharp' src='https://scontent.flhe10-1.fna.fbcdn.net/v/t1.6435-9/185321622_257099689476329_3208790035830364121_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=09cbfe&_nc_eui2=AeF7L40Gr-dStVjurcG0ROhXDwOEVPEqS7APA4RU8SpLsLiC6q80244n_Ij5lNmBFGu6fdOrxYPIFiRCnkEXUzcn&_nc_ohc=Dl0ZhijnvOsAX_INvZ7&_nc_ht=scontent.flhe10-1.fna&oh=00_AfDUzf-IYNIF73iGjhw64yrKAAbkvtkrMvgNbAj3cdVhOA&oe=63E68306' />
                 </ListItemIcon>
                 <ListItemText primary={getName(conversation.people)}></ListItemText>
               </ListItem>
             ))}
           </List>
         </Grid>
-       
-        <Grid  item xs={9}>
-         
-            <List ref={scrollRef} scrollableNodeProps={{ ref: scrollRef }}  className={classes.messageArea}>
+        {conversationId || id ? <Grid item xs={9}>
+          <List ref={scrollRef} scrollableNodeProps={{ ref: scrollRef }} className={classes.messageArea}>
             {messages.map(message => (
               <ListItem key={message._id}>
                 <Grid container>
@@ -253,15 +269,15 @@ export default function Messages() {
                           addSuffix: true,
                         })}</Typography>
                       </div>
-                  </div>
-                    
+                    </div>
+
                   </Grid>
                   <Grid item xs={12}></Grid>
                 </Grid>
               </ListItem>
             ))}
           </List>
-     
+
           <Divider />
           <Grid container style={{ padding: '5px' }}>
             <Grid item xs={11}>
@@ -271,15 +287,21 @@ export default function Messages() {
                 fullWidth
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
+                onKeyPress={(e) => handleKeyPress(e)}
               />
             </Grid>
             <Grid xs={1} align='right'>
-              <Fab color='primary' aria-label='add' onClick={() => handleSendMessage()}>
+              <Fab color='primary' aria-label='add'  onClick={() => handleSendMessage()}>
                 <Send />
               </Fab>
             </Grid>
           </Grid>
-        </Grid>
+        </Grid> : <Grid item xs={9}>
+            <div className={classes.noconversation}>
+          <h3>No active conversations</h3>
+          </div>
+        </Grid>}
+        
       </Grid>
     </div>
   );
