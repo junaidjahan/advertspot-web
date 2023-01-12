@@ -86,7 +86,7 @@ export const SellerDashboard = () => {
               className='ml-10'
               variant='outlined'
               onClick={() => {
-                navigate('/home');
+                navigate(`/seller/gig/get-by-seller-id/${user.id}`, { replace: true });
               }}
             >
               My Gigs
