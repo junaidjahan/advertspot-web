@@ -189,7 +189,7 @@ export const Home = () => {
             <img src='/no-data.png' width={500} />{' '}
           </Box>
         )}
-        <Box className='pb-30 d-flex justify-end'>
+        <Box className='pb-30 mt-10 d-flex justify-end'>
           <Pagination count={count} page={filter.pageNo} onChange={handlePage} color='primary' />
         </Box>
       </Box>
