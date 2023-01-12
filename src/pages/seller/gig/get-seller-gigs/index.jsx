@@ -22,7 +22,6 @@ export const GetSellerGigs = () => {
     getGigBySellerId(id, filter)
       .then(res => {
         setGigs(res.data);
-        console.log('Gig Data', res.data);
         setCount(Math.ceil(res.count / 12));
       })
       .finally(() => {
