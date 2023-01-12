@@ -8,7 +8,6 @@ import { BaseButton, BaseForm, BaseSelect, BaseTextField } from '../../../compon
 export const Signup = () => {
   const form = useForm({ schema: signupSchema });
   const { signup } = useAuth();
-  const { openLoader, closeLoader } = useLoader();
   const { open } = useSnackbar();
   const navigate = useNavigate();
   const {
@@ -16,9 +15,8 @@ export const Signup = () => {
   } = form;
 
   const handleSubmit = async values => {
-    openLoader();
     await signup(values);
-    closeLoader();
+
     open('Signed up successfully!');
     navigate('/auth/login');
   };
