@@ -1,10 +1,11 @@
-import { Box, Container, Grid, Icon } from '@mui/material';
+import { Box, Container, Grid, Icon, InputAdornment } from '@mui/material';
 import { BaseButton, BaseCard, BaseForm, BaseSelect, BaseTextField } from '~/components';
-import { useForm, useJob } from '~/hooks';
+import { useForm, useJob, useSnackbar } from '~/hooks';
 import { jobSchema } from '~/schemas';
 import { userState } from '~/state';
 import { useForm as useHookForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
+import { useLoader } from '~/hooks/use-loader';
 
 export const PostJob = () => {
   const jobSteps = ['1. Post a job to the marketplace', '2. Get proposals from talent', '4. Pay for work you approve'];
@@ -16,13 +17,26 @@ export const PostJob = () => {
     { value: 'poster', label: 'Poster' },
     { value: 'flyer', label: 'Flyer' }
   ];
+
+  const sizeType = [
+    { value: 'inch', label: 'Inches' },
+    { value: 'foot', label: 'Feets' }
+  ];
+  const durationType = [
+    { value: 'hours', label: 'Hours' },
+    { value: 'days', label: 'Days' },
+    { value: 'weeks', label: 'Weeks' },
+    { value: 'months', label: 'Months' },
+    { value: 'years', label: 'Years' }
+  ];
   const form = useForm({ schema: jobSchema });
   //   const { reset } = useHookForm({ defaultValues: { Title: '', Budget: '' } });
   const {
     formState: { isValid, isSubmitting },
     reset
   } = form;
-
+  const { open } = useSnackbar();
+  const { openLoader, closeLoader } = useLoader();
   const { saveJob, getAllCities } = useJob();
 
   const [cities, setCities] = useState([]);
@@ -34,7 +48,10 @@ export const PostJob = () => {
   }, []);
 
   const handleSubmit = async values => {
+    openLoader();
     await saveJob(values);
+    closeLoader();
+    open('Job created successdfully!');
     reset();
   };
 
@@ -87,12 +104,16 @@ export const PostJob = () => {
               </Grid>
               <Grid item xs={12} md={6}>
                 <Box sx={style.textField}>
-                  <BaseTextField fullWidth required label='Dimensions' name='Dimensions' />
-                </Box>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <Box sx={style.textField}>
-                  <BaseTextField fullWidth required label='Budget' name='Budget' />
+                  <BaseTextField
+                    InputProps={{
+                      endAdornment: <InputAdornment position='start'>Pkr</InputAdornment>
+                    }}
+                    type='number'
+                    required
+                    fullWidth
+                    label='Budget'
+                    name='Budget'
+                  />
                 </Box>
               </Grid>
               <Grid item xs={12} md={6}>
@@ -102,9 +123,40 @@ export const PostJob = () => {
               </Grid>
               <Grid item xs={12} md={6}>
                 <Box sx={style.textField}>
+                  <BaseTextField type='number' fullWidth label='Height' name='Height' />
+                </Box>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Box sx={style.textField}>
+                  <BaseSelect fullWidth label='Unit' options={sizeType} name='Unit' />
+                </Box>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Box sx={style.textField}>
+                  <BaseTextField type='number' fullWidth label='Width' name='Width' />
+                </Box>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Box sx={style.textField}>
+                  <BaseSelect fullWidth label='Unit' options={sizeType} name='Unit' />
+                </Box>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Box sx={style.textField}>
+                  <BaseTextField type='number' required fullWidth label='Delivery' name='Delivery' />
+                </Box>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Box sx={style.textField}>
+                  <BaseSelect fullWidth label='Duration' options={durationType} name='Duration' />
+                </Box>
+              </Grid>
+              <Grid item md={12}>
+                <Box sx={style.textField}>
                   <BaseSelect fullWidth required={true} label='Location' options={cities} name='Location' />
                 </Box>
               </Grid>
+
               <Grid item md={12}>
                 <Box sx={style.textField}>
                   <BaseTextField rows={4} multiline fullWidth label='Description' name='Description' />

@@ -89,10 +89,8 @@ export const CreateGig = () => {
     }
 
     arr.push(...e.target.files);
-    console.log(arr);
     form.setValue('Image', arr);
     setPreviewImages(arr);
-    console.log('value in image var', form.getValues().Image);
   };
 
   const getImageUrl = item => {
