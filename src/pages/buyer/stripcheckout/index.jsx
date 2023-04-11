@@ -1,9 +1,22 @@
 import { PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js';
+import { useNavigate } from 'react-router-dom';
 import { BaseButton } from '~/components';
+import { useOrder } from '~/hooks';
+import { useLoader } from '~/hooks/use-loader';
 
-const StripCheckoutForm = () => {
+const StripCheckoutForm = ({ order }) => {
   const stripe = useStripe();
   const elements = useElements();
+  const { saveOrder } = useOrder();
+  const { openLoader, closeLoader } = useLoader();
+  const navigate = useNavigate();
+
+  const createOrder = async () => {
+    openLoader();
+    await saveOrder(order);
+    closeLoader();
+    navigate('/buyer/dashboard');
+  };
 
   const handleSubmit = async event => {
     // We don't want to let default form submission happen here,
@@ -22,12 +35,10 @@ const StripCheckoutForm = () => {
       redirect: 'if_required'
     });
 
-    console.log('Result', result);
-
     if (result.error) {
       // Show error to your customer (for example, payment details incomplete)
-      console.log(result.error.message);
     } else {
+      createOrder();
       // Your customer will be redirected to your `return_url`. For some payment
       // methods like iDEAL, your customer will be redirected to an intermediate
       // site first to authorize the payment, then redirected to the `return_url`.

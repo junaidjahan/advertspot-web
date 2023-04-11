@@ -10,7 +10,7 @@ export const usePayment = () => {
   const createPaymentIntent = async paymentData => {
     {
       try {
-        const paymentIntent = await post('/payment', paymentData);
+        const paymentIntent = await post('/payment', paymentData, {}, { showErrorToast: false });
         return paymentIntent;
       } catch {}
     }

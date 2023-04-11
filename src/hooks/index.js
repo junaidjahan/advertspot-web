@@ -6,3 +6,4 @@ export * from './use-job';
 export * from './use-gig';
 export * from './use-proposal';
 export * from './use-chat';
+export * from './use-order';
