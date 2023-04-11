@@ -89,7 +89,7 @@ export const SellerDashboard = () => {
                 navigate(`/seller/gig/get-by-seller-id/${user.id}`, { replace: true });
               }}
             >
-              My Gigs
+              My Ads
             </BaseButton>
             <BaseButton
               onClick={() => {
@@ -98,7 +98,7 @@ export const SellerDashboard = () => {
               className='ml-10'
               variant='contained'
             >
-              Create A New Gig
+              Create A New Ad
             </BaseButton>
           </Box>
         </Box>

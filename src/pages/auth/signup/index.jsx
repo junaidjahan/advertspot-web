@@ -1,18 +1,24 @@
 import { Box, FormControl, Grid, InputLabel, MenuItem, Select } from '@mui/material';
-import { Link } from 'react-router-dom';
-import { useAuth, useForm } from '~/hooks';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth, useForm, useSnackbar } from '~/hooks';
+import { useLoader } from '~/hooks/use-loader';
 import { loginSchema, signupSchema } from '~/schemas';
 import { BaseButton, BaseForm, BaseSelect, BaseTextField } from '../../../components/base';
 
 export const Signup = () => {
   const form = useForm({ schema: signupSchema });
   const { signup } = useAuth();
+  const { open } = useSnackbar();
+  const navigate = useNavigate();
   const {
     formState: { isValid, isSubmitting }
   } = form;
 
   const handleSubmit = async values => {
     await signup(values);
+
+    open('Signed up successfully!');
+    navigate('/auth/login');
   };
 
   return (

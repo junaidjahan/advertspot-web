@@ -24,7 +24,7 @@ import { useLoader } from '~/hooks/use-loader';
 import { useEffect } from 'react';
 
 export const CreateGig = () => {
-  const jobSteps = ['1. Post services through Gigs.', '2. Get Orders from Clients', '4. Get Paid'];
+  const jobSteps = ['1. Post services through Ads.', '2. Get Orders from Clients', '4. Get Paid'];
   const jobType = [
     { value: 'flex', label: 'Flex' },
     { value: 'banner', label: 'Banner' },
@@ -62,7 +62,6 @@ export const CreateGig = () => {
   const { openLoader, closeLoader } = useLoader();
 
   const [PreviewImages, setPreviewImages] = useState([]);
-  
 
   const handleSubmit = async values => {
     openLoader();
@@ -83,23 +82,18 @@ export const CreateGig = () => {
   };
 
   const setImages = e => {
-    var arr =[]; form.getValues().Image;
-    if(form.getValues().Image){
+    var arr = [];
+    form.getValues().Image;
+    if (form.getValues().Image) {
       arr.push(...form.getValues().Image);
     }
-   
+
     arr.push(...e.target.files);
-    console.log(arr);
-    form.setValue('Image',arr);
+    form.setValue('Image', arr);
     setPreviewImages(arr);
-    console.log("value in image var",form.getValues().Image);
   };
 
   const getImageUrl = item => {
-    // console.log(item);
-    // const reader = new FileReader();
-    // reader.readAsDataURL(item);
-    console.log(item);
     const url = URL.createObjectURL(item);
 
     return `${url}?w=100&h=100&fit=crop&auto=format`;
@@ -127,7 +121,7 @@ export const CreateGig = () => {
                   })}
                 </Box>
                 <Box sx={style.btnBox}>
-                  <h5 style={style.lightWeight}>Post a Gig Today!</h5>
+                  <h5 style={style.lightWeight}>Post an Ad Today!</h5>
                 </Box>
               </Box>
             </Grid>
@@ -139,7 +133,7 @@ export const CreateGig = () => {
           </Grid>
         </BaseCard>
         <BaseCard>
-          <h1>Create A Gig</h1>
+          <h1>Create Ad</h1>
           <BaseForm form={form} onSubmit={handleSubmit}>
             <Grid container spacing={2}>
               <Grid item xs={12} md={6}>
@@ -273,7 +267,7 @@ export const CreateGig = () => {
               <Grid item md={12}>
                 <Box sx={style.button}>
                   <BaseButton variant='contained' disabled={!isValid} loading={isSubmitting} size='small' type='submit'>
-                    Create Gig
+                    Create Ad
                   </BaseButton>
                 </Box>
               </Grid>

@@ -34,6 +34,10 @@ export const GigDetails = () => {
       });
   };
 
+  const proceedToPayment = () => {
+    navigate(`/buyer/payment/${id}`);
+  };
+
   useEffect(() => {
     getById(id);
   }, [id]);
@@ -59,15 +63,16 @@ export const GigDetails = () => {
                 <h2 style={{ fontWeight: '500', fontSize: 18, color: 'grey' }}>
                   {gig.user?.firstName} {gig.user?.lastName}
                 </h2>
-                {gig.user?._id !== user[0].id && <BaseButton
-                  onClick={() => navigate(`/seller/messages/${gig.user?._id}`, { replace: true })}
-                  variant='outlined'
-                  className='mt-10'
-                >
-                  {' '}
-                  Message
-                </BaseButton>}
-               
+                {gig.user?._id !== user[0].id && (
+                  <BaseButton
+                    onClick={() => navigate(`/seller/messages/${gig.user?._id}`, { replace: true })}
+                    variant='outlined'
+                    className='mt-10'
+                  >
+                    {' '}
+                    Message
+                  </BaseButton>
+                )}
               </Box>
             </Container>
           </Grid>
@@ -123,7 +128,7 @@ export const GigDetails = () => {
               <Box className='d-flex align-center justify-center mt-40'>
                 <BaseButton
                   onClick={() => {
-                    SubmitProposal();
+                    proceedToPayment();
                   }}
                   variant='contained'
                   disableElevation

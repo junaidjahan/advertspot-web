@@ -23,7 +23,7 @@ export const useAuth = () => {
 
   const signup = async data => {
     try {
-      saveAuth(await post('/auth/signup', data));
+      await post('/auth/signup', data);
     } catch {}
   };
 
