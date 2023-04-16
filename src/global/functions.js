@@ -26,3 +26,12 @@ export const toTitleCase = phrase => {
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
 };
+
+export const objPropsToLowerCase = obj => {
+  const lowerCaseObject = Object.keys(obj).reduce((acc, key) => {
+    acc[key.toLowerCase()] = obj[key];
+    return acc;
+  }, {});
+
+  return lowerCaseObject;
+};

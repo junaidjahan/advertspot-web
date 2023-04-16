@@ -1,6 +1,6 @@
 import { Avatar, Box, Container, Grid, Icon, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { BackPage, BaseButton, BaseCard } from '~/components';
 import { useProposal } from '~/hooks';
 import { useLoader } from '~/hooks/use-loader';
@@ -11,17 +11,21 @@ export const ProposalDetails = () => {
   const { getProposalById } = useProposal();
   const [proposal, setProposal] = useState({});
   const { openLoader, closeLoader } = useLoader();
+  const navigate = useNavigate();
 
   const getById = () => {
     openLoader();
     getProposalById(id)
       .then(res => {
-        console.log(res);
         setProposal(res);
       })
       .finally(() => {
         closeLoader();
       });
+  };
+
+  const proceedToPayment = () => {
+    navigate(`/buyer/payment/${id}`);
   };
 
   useEffect(() => {
@@ -67,7 +71,13 @@ export const ProposalDetails = () => {
               <BaseCard sx={{ mt: 2, backgroundColor: 'lightGrey.main' }}>{proposal.proposal?.CoverLetter}</BaseCard>
             </Box>
             <Box className='mt-20' sx={style.center}>
-              <BaseButton variant='contained' size='small'>
+              <BaseButton
+                onClick={() => {
+                  proceedToPayment();
+                }}
+                variant='contained'
+                size='small'
+              >
                 Place Order
               </BaseButton>
             </Box>

@@ -13,16 +13,27 @@ export const useOrder = () => {
     }
   };
 
-  //   const getAllProposals = async id => {
-  //     {
-  //       try {
-  //         const proposals = await get(`/proposal/proposals-by-id/${id}`);
-  //         return proposals;
-  //       } catch {}
-  //     }
-  //   };
+  const getAllBuyerOrders = async () => {
+    {
+      try {
+        const orders = await get(`/order/all-buyer-orders`);
+        return orders;
+      } catch {}
+    }
+  };
+
+  const getAllSellerOrders = async () => {
+    {
+      try {
+        const orders = await get(`/order/all-seller-orders`);
+        return orders;
+      } catch {}
+    }
+  };
 
   return {
-    saveOrder
+    saveOrder,
+    getAllBuyerOrders,
+    getAllSellerOrders
   };
 };

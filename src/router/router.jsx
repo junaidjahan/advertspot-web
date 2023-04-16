@@ -21,14 +21,14 @@ import {
   GigDetails,
   ProposalDetails,
   GetSellerGigs,
-  Payment
+  Payment,
+  Order
 } from '~/pages';
 import { CreateProposal } from '~/pages/seller/proposal/create-proposal';
 
 import { ContactUs } from '~/pages/contactus';
 import { authState, userState } from '~/state';
 import { AllProposals } from '~/pages/buyer/proposal/all-proposals';
-import StripCheckoutForm from '~/pages/buyer/stripcheckout';
 
 export const Router = () => {
   const auth = useRecoilValue(authState);
@@ -61,6 +61,7 @@ export const Router = () => {
           <Route path='messages' element={<Messages />} />
           <Route path='proposals/proposal-details/:id' element={<ProposalDetails />} />
           <Route path='payment/:id' element={<Payment />} />
+          <Route path='orders' element={<Order />} />
         </Route>
         <Route path='seller/*' element={<SellerLayout />}>
           <Route path='all-jobs' element={<AllJobs />} />

@@ -43,14 +43,14 @@ export const JobPostCard = ({ job, sx }) => {
           <Box className='d-flex pl-5 mt-5'>
             <p>Proposals:</p> <h4 style={style.proposals}> {job.Proposals}</h4>
           </Box>
-          <Box className='d-flex'>
+          {/* <Box className='d-flex'>
             <p style={style.payment}>
               Payment <span>Unverified</span>{' '}
             </p>
             <span>
               <Icon sx={style.paymentIcon}> dangerous</Icon>
             </span>
-          </Box>
+          </Box> */}
         </Box>
       </Box>
     </Box>

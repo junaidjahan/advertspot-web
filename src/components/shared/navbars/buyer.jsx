@@ -36,14 +36,6 @@ export const BuyerNavbar = () => {
     }
   ];
   const account = [
-    // {
-    //   text: 'Profile',
-    //   icon: 'person'
-    // },
-    // {
-    //   text: 'Settings',
-    //   icon: 'settings'
-    // },
     {
       text: 'Logout',
       icon: 'logout',
@@ -54,6 +46,13 @@ export const BuyerNavbar = () => {
       icon: 'dashboard',
       method: () => {
         navigate('/buyer/dashboard');
+      }
+    },
+    {
+      text: 'Orders',
+      icon: 'list_alt',
+      method: () => {
+        navigate('/buyer/orders');
       }
     }
   ];

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { BaseCard } from '~/components';
-import { useGig, useJob } from '~/hooks';
+import { useGig, useJob, useProposal } from '~/hooks';
 import { useLoader } from '~/hooks/use-loader';
 import { usePayment } from '~/hooks/use-payment';
 import { userState } from '~/state';
@@ -16,7 +16,7 @@ export const Payment = () => {
   const { createPaymentIntent } = usePayment();
   let { id } = useParams();
   const { getGigById } = useGig();
-  const { getById } = useJob();
+  const { getProposalById } = useProposal();
   const { openLoader, closeLoader } = useLoader();
   const [user, setUser] = useRecoilState(userState);
   const [order, setOrder] = useState({
@@ -31,18 +31,33 @@ export const Payment = () => {
   const getGigOrJob = async () => {
     openLoader();
     const gigById = await getGigById(id);
-    const order = {
-      sellerId: gigById?.gig?.sellerId,
-      buyerId: user.id,
-      status: 'IN_PROGRESS',
-      amount: gigById?.gig?.price,
-      gigId: gigById?.gig?._id,
-      jobId: null
-    };
-    setOrder(order);
-    if (!gigById.gig._id) {
-      const jobById = await getById(id);
+    console.log('Gig ', gigById);
+    if (gigById?.gig?._id) {
+      console.log('Inside gig');
+      const order = {
+        sellerId: gigById?.gig?.sellerId,
+        buyerId: user.id,
+        status: 'In Progress',
+        amount: gigById?.gig?.price,
+        gigId: gigById?.gig?._id,
+        jobId: null
+      };
+      setOrder(order);
     }
+    if (!gigById?.gig?._id) {
+      console.log('Inside proposal');
+      const proposalById = await getProposalById(id);
+      const order = {
+        sellerId: proposalById?.proposal?.UserId,
+        buyerId: user.id,
+        status: 'In Progress',
+        amount: proposalById?.proposal?.Amount,
+        gigId: null,
+        jobId: proposalById?.proposal?.JobId
+      };
+      setOrder(order);
+    }
+    console.log('Before close loader');
     closeLoader();
   };
 

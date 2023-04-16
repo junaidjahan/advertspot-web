@@ -231,7 +231,7 @@ const style = {
     mt: 1,
 
     '&:hover': {
-      backgroundColor: 'primary.light'
+      backgroundColor: 'grey.light'
     }
   },
 
