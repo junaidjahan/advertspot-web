@@ -1,18 +1,37 @@
 import { Box, Container, Icon, Typography, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { BaseButton, BaseCard } from '~/components';
+import { BaseButton, BaseCard, OrderCard } from '~/components';
 import { authState, userState } from '~/state';
 import { useEffect, useState } from 'react';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { useOrder } from '~/hooks';
+import { useLoader } from '~/hooks/use-loader';
+import { objPropsToLowerCase } from '~/global';
 
 export const SellerDashboard = () => {
   const [user, setUser] = useRecoilState(userState);
   const [IsAOExpanded, setIsAOExpanded] = useState(false);
   const [IsCOExpanded, setIsCOExpanded] = useState(false);
   const [IsCAExpanded, setIsCAExpanded] = useState(false);
+  const { openLoader, closeLoader } = useLoader();
+  const [orders, setOrders] = useState([]);
   const auth = useRecoilValue(authState);
+
+  const { getAllSellerOrders } = useOrder();
   const navigate = useNavigate();
+
+  const getAllOrders = () => {
+    openLoader();
+    getAllSellerOrders()
+      .then(res => {
+        setOrders(res);
+      })
+      .finally(() => {
+        closeLoader();
+      });
+  };
+
   const handleAuth = async () => {
     if (user && auth) {
       const navigation = user.userTypes?.includes('seller') ? '/seller/dashboard' : '/buyer/dashboard';
@@ -69,6 +88,7 @@ export const SellerDashboard = () => {
 
   useEffect(() => {
     handleAuth();
+    getAllOrders();
   }, [user, auth]);
 
   return (
@@ -114,44 +134,16 @@ export const SellerDashboard = () => {
               <Typography sx={{ width: '33%', flexShrink: 0 }}>Active Orders</Typography>
             </AccordionSummary>
 
-            {jobs.map((job, index) => {
+            {orders?.map((order, index) => {
               return (
-                <AccordionDetails>
-                  <Box key={index} sx={style.list}>
-                    <Box className='d-flex justify-space-between'>
-                      <Box>
-                        <h4 style={style.jobTitle}>{job.title}</h4>
-                      </Box>
-                      <Box>
-                        <Icon sx={style.icon}>delete</Icon>
-                      </Box>
-                    </Box>
-                    <Box className='d-flex justify-space-between'>
-                      <Box>
-                        <p style={style.budget} className='d-flex'>
-                          Budget: {job.budget}
-                        </p>
-                      </Box>
-                      <Box className='d-flex'>
-                        <h5 style={style.subHeading}>
-                          Proposals:
-                          <span style={style.details}> {job.proposals}</span>
-                        </h5>
-                        <h5 className='ml-7' style={style.subHeading}>
-                          Hired:<span style={style.details}> {job.hired}</span>
-                        </h5>
-                        <h5 className='ml-7' style={style.subHeading}>
-                          Status:<span style={style.details}> {job.status}</span>
-                        </h5>
-                      </Box>
-                    </Box>
-                  </Box>
-                </AccordionDetails>
+                <>
+                  <OrderCard className='mt-15 mb-15' key={index} order={objPropsToLowerCase(order)} />
+                </>
               );
             })}
           </Accordion>
         </Box>
-        <Box sx={{ marginY: 2 }}>
+        {/* <Box sx={{ marginY: 2 }}>
           <Accordion
             elevation='0'
             sx={{ borderRadius: 4, borderColor: 'rgba(0, 0, 0, 0.12)', borderStyle: 'solid', borderWidth: '1px' }}
@@ -248,7 +240,7 @@ export const SellerDashboard = () => {
               );
             })}
           </Accordion>
-        </Box>
+        </Box> */}
         <BaseCard sx={style.card}>
           <Box className='pl-20 mb-20'>
             <h3 style={style.heading}>3 steps to become a top seller on Fiverr</h3>

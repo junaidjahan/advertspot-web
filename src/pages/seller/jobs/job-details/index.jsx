@@ -74,7 +74,7 @@ export const JobDetails = ({ jobId }) => {
                 <Typography variant='p' sx={style.dimesions}>
                   Dimensions:
                 </Typography>{' '}
-                {job?.Dimensions}
+                {job?.Height} <p style={style.by}>by</p> {job?.Width}
               </Typography>
             </Grid>
             <Grid item xs={12} md={6}>
@@ -158,6 +158,11 @@ const style = {
   dimesions: {
     fontWeight: '600',
     mr: 2
+  },
+  by: {
+    color: '#9B57F2',
+    marginLeft: '8px',
+    marginRight: '8px'
   },
   proposals: {
     color: 'darkGrey.main'
