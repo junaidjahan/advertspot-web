@@ -6,6 +6,7 @@ import { userState } from '~/state';
 import { useForm as useHookForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import { useLoader } from '~/hooks/use-loader';
+import GoogleMapComponent from '~/components/shared/google-maps';
 
 export const PostJob = () => {
   const jobSteps = ['1. Post a job to the marketplace', '2. Get proposals from talent', '4. Pay for work you approve'];
@@ -38,7 +39,7 @@ export const PostJob = () => {
   const { open } = useSnackbar();
   const { openLoader, closeLoader } = useLoader();
   const { saveJob, getAllCities } = useJob();
-
+  const [location, setLocation] = useState();
   const [cities, setCities] = useState([]);
 
   useEffect(() => {
@@ -153,7 +154,18 @@ export const PostJob = () => {
               </Grid>
               <Grid item md={12}>
                 <Box sx={style.textField}>
-                  <BaseSelect fullWidth required={true} label='Location' options={cities} name='Location' />
+                  {/* <BaseSelect fullWidth required={true} label='Location' options={cities} name='Location' /> */}
+                  <BaseTextField
+                    className='mb-30'
+                    value={location}
+                    focused={location}
+                    onChange={e => setLocation(e.target.value)}
+                    fullWidth
+                    required={true}
+                    label='Location'
+                    name='Location'
+                  />
+                  <GoogleMapComponent location={setLocation} />
                 </Box>
               </Grid>
 
