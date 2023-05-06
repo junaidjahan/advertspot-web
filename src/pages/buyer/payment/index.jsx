@@ -31,9 +31,7 @@ export const Payment = () => {
   const getGigOrJob = async () => {
     openLoader();
     const gigById = await getGigById(id);
-    console.log('Gig ', gigById);
     if (gigById?.gig?._id) {
-      console.log('Inside gig');
       const order = {
         sellerId: gigById?.gig?.sellerId,
         buyerId: user.id,
@@ -57,7 +55,6 @@ export const Payment = () => {
       };
       setOrder(order);
     }
-    console.log('Before close loader');
     closeLoader();
   };
 
