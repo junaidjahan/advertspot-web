@@ -22,13 +22,15 @@ import {
   ProposalDetails,
   GetSellerGigs,
   Payment,
-  Order
+  Order,
+  BuyerAnalytics
 } from '~/pages';
 import { CreateProposal } from '~/pages/seller/proposal/create-proposal';
 
 import { ContactUs } from '~/pages/contactus';
 import { authState, userState } from '~/state';
 import { AllProposals } from '~/pages/buyer/proposal/all-proposals';
+import { SellerAnalytics } from '~/pages/seller/analytics';
 
 export const Router = () => {
   const auth = useRecoilValue(authState);
@@ -62,6 +64,7 @@ export const Router = () => {
           <Route path='proposals/proposal-details/:id' element={<ProposalDetails />} />
           <Route path='payment/:id' element={<Payment />} />
           <Route path='orders' element={<Order />} />
+          <Route path='analytics' element={<BuyerAnalytics />} />
         </Route>
         <Route path='seller/*' element={<SellerLayout />}>
           <Route path='all-jobs' element={<AllJobs />} />
@@ -73,6 +76,7 @@ export const Router = () => {
           <Route path='messages/:id' element={<Messages />} />
           <Route path='messages' element={<Messages />} />
           <Route path='submit-proposal/:id' element={<CreateProposal />} />
+          <Route path='analytics' element={<SellerAnalytics />} />
         </Route>
       </Route>
 

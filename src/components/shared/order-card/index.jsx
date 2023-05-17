@@ -11,13 +11,31 @@ import {
 import { useState } from 'react';
 import { BaseButton, BaseCard } from '~/components';
 import { toTitleCase } from '~/global';
+import { ORDER_STATUS, USER_TYPE } from '~/global/constants';
+import { useOrder, useSnackbar } from '~/hooks';
+import { useLoader } from '~/hooks/use-loader';
 
-export const OrderCard = ({ order, ...props }) => {
+export const OrderCard = ({ order, handleChange, ...props }) => {
   const [completeOrder, setCompleteOrder] = useState(false);
   const [closeOrder, setCancelOrder] = useState(false);
+  const { getAllBuyerOrders, changeStatus } = useOrder();
+  const { openLoader, closeLoader } = useLoader();
+  const { open } = useSnackbar();
 
   const handleCompleteOpen = () => {
     setCompleteOrder(true);
+  };
+
+  const handleCompleteOrder = async (id, status) => {
+    openLoader();
+    const order = await changeStatus(id, status);
+    closeLoader();
+    setCancelOrder(false);
+    setCompleteOrder(false);
+    if (order) {
+      open(`Order ${toTitleCase(status)} successfully!`);
+    }
+    handleChange();
   };
 
   const handleCancelOpen = () => {
@@ -66,15 +84,15 @@ export const OrderCard = ({ order, ...props }) => {
             <Box className='d-flex mt-10 justify-space-between'>
               <Box>
                 <p style={style.budget} className='d-flex'>
-                  Amount: {order?.price ?? order.budget} Pkr
+                  Amount: {order?.amount} Pkr
                 </p>
               </Box>
-
-              {order?.proposals == 0 || order?.proposals > 0 ? (
+              {order?.userType === USER_TYPE.SELLER ||
+              [ORDER_STATUS.CANCELLED, ORDER_STATUS.COMPLETED].includes(order?.status) ? (
                 <></>
               ) : (
                 <Box className='d-flex'>
-                  <BaseButton className='mr-10' size='small' onClick={handleCancelOpen} variant='outlined'>
+                  <BaseButton color='error' className='mr-10' size='small' onClick={handleCancelOpen} variant='outlined'>
                     Cancel
                   </BaseButton>
                   <BaseButton onClick={handleCompleteOpen} variant='contained'>
@@ -93,8 +111,19 @@ export const OrderCard = ({ order, ...props }) => {
                       </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                      <BaseButton onClick={handleClose}>No</BaseButton>
-                      <BaseButton onClick={handleClose} autoFocus>
+                      <BaseButton
+                        onClick={() => {
+                          handleClose();
+                        }}
+                      >
+                        No
+                      </BaseButton>
+                      <BaseButton
+                        onClick={() => {
+                          handleCompleteOrder(order.id, ORDER_STATUS.COMPLETED);
+                        }}
+                        autoFocus
+                      >
                         Yes
                       </BaseButton>
                     </DialogActions>
@@ -108,12 +137,17 @@ export const OrderCard = ({ order, ...props }) => {
                     <DialogTitle id='alert-dialog-title'>{'Cancel Order'}</DialogTitle>
                     <DialogContent>
                       <DialogContentText id='alert-dialog-description'>
-                        Are you sure you want to cancel this order??
+                        Are you sure you want to cancel this order?
                       </DialogContentText>
                     </DialogContent>
                     <DialogActions>
                       <BaseButton onClick={handleClose}>No</BaseButton>
-                      <BaseButton onClick={handleClose} autoFocus>
+                      <BaseButton
+                        onClick={() => {
+                          handleCompleteOrder(order.id, ORDER_STATUS.CANCELLED);
+                        }}
+                        autoFocus
+                      >
                         Yes
                       </BaseButton>
                     </DialogActions>

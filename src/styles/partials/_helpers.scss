@@ -7,12 +7,17 @@
 .shadow {
   box-shadow: $normal-shadow !important;
 }
+
 .light-shadow {
   box-shadow: $light-shadow !important;
 }
 
 .app-shadow {
   box-shadow: $app-shadow !important;
+}
+
+.card-shadow {
+  box-shadow: $card-shadow !important;
 }
 
 .height-100x {

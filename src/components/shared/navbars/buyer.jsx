@@ -37,11 +37,6 @@ export const BuyerNavbar = () => {
   ];
   const account = [
     {
-      text: 'Logout',
-      icon: 'logout',
-      method: logout
-    },
-    {
       text: 'Dashboard',
       icon: 'dashboard',
       method: () => {
@@ -54,6 +49,18 @@ export const BuyerNavbar = () => {
       method: () => {
         navigate('/buyer/orders');
       }
+    },
+    {
+      text: 'Analytics',
+      icon: 'bar_chart_4_bars',
+      method: () => {
+        navigate('/buyer/analytics');
+      }
+    },
+    {
+      text: 'Logout',
+      icon: 'logout',
+      method: logout
     }
   ];
 

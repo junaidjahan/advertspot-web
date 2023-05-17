@@ -9,6 +9,7 @@ import { useLoader } from '~/hooks/use-loader';
 import { usePayment } from '~/hooks/use-payment';
 import { userState } from '~/state';
 import StripCheckoutForm from '../stripcheckout';
+import { ORDER_STATUS } from '~/global/constants';
 
 export const Payment = () => {
   const [stripePromise, setStripePromise] = useState(null);
@@ -35,7 +36,7 @@ export const Payment = () => {
       const order = {
         sellerId: gigById?.gig?.sellerId,
         buyerId: user.id,
-        status: 'In Progress',
+        status: ORDER_STATUS.IN_PROGRESS,
         amount: gigById?.gig?.price,
         gigId: gigById?.gig?._id,
         jobId: null
@@ -43,12 +44,11 @@ export const Payment = () => {
       setOrder(order);
     }
     if (!gigById?.gig?._id) {
-      console.log('Inside proposal');
       const proposalById = await getProposalById(id);
       const order = {
         sellerId: proposalById?.proposal?.UserId,
         buyerId: user.id,
-        status: 'In Progress',
+        status: ORDER_STATUS.IN_PROGRESS,
         amount: proposalById?.proposal?.Amount,
         gigId: null,
         jobId: proposalById?.proposal?.JobId

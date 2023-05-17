@@ -1,3 +1,5 @@
+import { pieChartoptions } from './constants';
+
 export const serializeQuery = (params, prefix = '') => {
   const query = Object.keys(params).map(key => {
     const value = params[key];
@@ -34,4 +36,57 @@ export const objPropsToLowerCase = obj => {
   }, {});
 
   return lowerCaseObject;
+};
+
+/**
+ * @param {pieChartoptions} options
+ *
+ */
+export const setPiarChartdata = (options, data, title) => {
+  options.series[0].data = data;
+  options.title.text = title
+
+  return options;
+};
+
+export const setCircleGaugeData = (options, data, title) => {
+  const gaugeData = [
+    {
+      value: data.Completed,
+      name: 'Completed',
+      title: {
+        offsetCenter: ['0%', '-30%']
+      },
+      detail: {
+        valueAnimation: true,
+        offsetCenter: ['0%', '-20%']
+      }
+    },
+    {
+      value: data.InProgress,
+      name: 'In-Progress',
+      title: {
+        offsetCenter: ['0%', '0%']
+      },
+      detail: {
+        valueAnimation: true,
+        offsetCenter: ['0%', '10%']
+      }
+    },
+    {
+      value: data.Cancelled,
+      name: 'Cancel',
+      title: {
+        offsetCenter: ['0%', '30%']
+      },
+      detail: {
+        valueAnimation: true,
+        offsetCenter: ['0%', '40%']
+      }
+    }
+  ];
+  options.series[0].data = gaugeData;
+  options.title.text = title
+
+  return options;
 };

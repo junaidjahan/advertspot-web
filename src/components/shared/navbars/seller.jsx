@@ -44,16 +44,23 @@ export const SellerNavbar = () => {
     //   icon: 'settings'
     // },
     {
-      text: 'Logout',
-      icon: 'logout',
-      method: logout
-    },
-    {
       text: 'Dashboard',
       icon: 'dashboard',
       method: () => {
         navigate('/seller/dashboard');
       }
+    },
+    {
+      text: 'Analytics',
+      icon: 'bar_chart_4_bars',
+      method: () => {
+        navigate('/seller/analytics');
+      }
+    },
+    {
+      text: 'Logout',
+      icon: 'logout',
+      method: logout
     }
   ];
 

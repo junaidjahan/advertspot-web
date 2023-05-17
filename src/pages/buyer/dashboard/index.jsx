@@ -95,7 +95,7 @@ export const BuyerDashboard = () => {
               className='ml-10'
               variant='contained'
             >
-              Post a Job
+              Post Job
             </BaseButton>
           </Box>
         </Box>
