@@ -31,8 +31,8 @@ export const basicChartOptions = {
 };
 
 export const pieChartoptions = {
-  title:{
-    text:''
+  title: {
+    text: ''
   },
   legend: {
     top: 'bottom',
@@ -130,67 +130,61 @@ export const circleGauge = {
   title: {
     text: ''
   },
-  color: [
-    '#c77dff',
-    '#7b2cbf',
-    '#ff5a5f',
-  ],
-    series: [
-      {
-        type: 'gauge',
-        startAngle: 90,
-        endAngle: -270,
-        pointer: {
-          show: false
-        },
-        progress: {
-          show: true,
-          overlap: false,
-          roundCap: true,
-          clip: false,
-          
-        },
-        axisLine: {
-          lineStyle: {
-            width: 40
-          }
-        },
-        splitLine: {
-          show: false,
-          distance: 0,
-          length: 10
-        },
-        axisTick: {
-          show: false
-        },
-        axisLabel: {
-          show: false,
-          distance: 50
-        },
-        data: [],
-        title: {
-          fontSize: 14
-        },
-        detail: {
-          width: 50,
-          height: 14,
-          fontSize: 14,
-          color: 'inherit',
-          borderColor: 'inherit',
-          borderRadius: 20,
-          borderWidth: 1,
-          formatter: '{value}%'
+  color: ['#c77dff', '#7b2cbf', '#ff5a5f'],
+  series: [
+    {
+      type: 'gauge',
+      startAngle: 90,
+      endAngle: -270,
+      pointer: {
+        show: false
+      },
+      progress: {
+        show: true,
+        overlap: false,
+        roundCap: true,
+        clip: false
+      },
+      axisLine: {
+        lineStyle: {
+          width: 40
         }
+      },
+      splitLine: {
+        show: false,
+        distance: 0,
+        length: 10
+      },
+      axisTick: {
+        show: false
+      },
+      axisLabel: {
+        show: false,
+        distance: 50
+      },
+      data: [],
+      title: {
+        fontSize: 14
+      },
+      detail: {
+        width: 50,
+        height: 14,
+        fontSize: 14,
+        color: 'inherit',
+        borderColor: 'inherit',
+        borderRadius: 20,
+        borderWidth: 1,
+        formatter: '{value}%'
       }
-    ]
-  
-}
+    }
+  ]
+};
 
 export const lineChartData = {
-  title:{
-    text:''
+  title: {
+    text: ''
   },
-color: [ '#9d4edd'],
+  color: ['#9d4edd'],
   xAxis: {
     type: 'category',
     data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']

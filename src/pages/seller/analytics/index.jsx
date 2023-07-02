@@ -69,7 +69,7 @@ export const SellerAnalytics = () => {
   }, []);
 
   return (
-    <div>
+    <div style={{ paddingBottom: '50px' }}>
       <Container maxWidth='lg' className='pb-50' style={{ position: 'relative', marginBottom: '50px' }}>
         <h1
           style={{ fontSize: '6rem', fontWeight: '500', paddingLeft: '1rem', color: '#dfdfdf', position: 'absolute' }}
@@ -79,7 +79,7 @@ export const SellerAnalytics = () => {
         <Box style={{ marginTop: '4.9rem', zIndex: 10, position: 'absolute' }}>
           <BaseCard className='mt-20'>
             <Grid container direction='row'>
-              <Grid className=' mt-30' md={6} xs={12} item>
+              {/* <Grid className='mt-30' style={{ height: '20rem' }} md={6} xs={12} item>
                 <BaseCard
                   variant=''
                   className='pt-10'
@@ -96,20 +96,7 @@ export const SellerAnalytics = () => {
                     {totalEarning} Pkr
                   </BaseCard>
                 </Box>
-              </Grid>
-              <Grid className=' mt-30' md={6} xs={12} item>
-                <BaseCard variant='' style={{ backgroundColor: '#b892ff', color: 'white', width: 'max-content' }}>
-                  <p>Job Success Rate</p>
-                </BaseCard>
-                <BaseChart options={jobSuccess} id='job-success' style={{ height: '400px' }} />
-              </Grid>
-
-              <Grid className=' mt-30' xs={12} md={6} item>
-                <BaseCard variant='' style={{ backgroundColor: '#b892ff', color: 'white', width: 'max-content' }}>
-                  <p>Orders percentage by type</p>
-                </BaseCard>
-                <BaseChart options={JSON.parse(JSON.stringify(orderPercentageByType))} id='order-type-by-percent' />
-              </Grid>
+              </Grid> */}
               <Grid xs={12} md={6} item className='mt-35'>
                 <BaseCard
                   className=''
@@ -118,9 +105,27 @@ export const SellerAnalytics = () => {
                 >
                   <p>Orders count by type</p>
                 </BaseCard>
-                <BaseChart options={JSON.parse(JSON.stringify(orderCountByType))} id='order-by-type' />
+                <BaseChart
+                  style={{ height: '28rem' }}
+                  options={JSON.parse(JSON.stringify(orderCountByType))}
+                  id='order-by-type'
+                />
               </Grid>
-              <Grid xs={12} item>
+              {/* <Grid style={{ height: '20rem' }} className=' mt-30' md={6} xs={12} item>
+                <BaseCard variant='' style={{ backgroundColor: '#b892ff', color: 'white', width: 'max-content' }}>
+                  <p>Job Success Rate</p>
+                </BaseCard>
+                <BaseChart options={jobSuccess} id='job-success' style={{ height: '300px' }} />
+              </Grid> */}
+
+              <Grid style={{ height: '28rem' }} className=' mt-30' xs={12} md={6} item>
+                <BaseCard variant='' style={{ backgroundColor: '#b892ff', color: 'white', width: 'max-content' }}>
+                  <p>Orders percentage by type</p>
+                </BaseCard>
+                <BaseChart options={JSON.parse(JSON.stringify(orderPercentageByType))} id='order-type-by-percent' />
+              </Grid>
+
+              <Grid className='mt-20' xs={12} md={6} item>
                 <BaseCard
                   className=''
                   variant=''
@@ -130,13 +135,13 @@ export const SellerAnalytics = () => {
                 </BaseCard>
                 <BaseChart
                   className='light-shadow'
-                  style={{ width: '1000px !important' }}
+                  style={{ height: '28rem' }}
                   options={JSON.parse(JSON.stringify(orderByMonth))}
                   id='order-by-month'
                 />
               </Grid>
 
-              <Grid xs={12} item className='mt-20'>
+              <Grid style={{ height: '28rem' }} xs={12} md={6} item className='mt-20'>
                 <BaseCard variant='' style={{ backgroundColor: '#b892ff', color: 'white', width: 'max-content' }}>
                   <p>Amount earned by month</p>
                 </BaseCard>

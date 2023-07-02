@@ -73,12 +73,12 @@ export const GetSellerGigs = () => {
                     </Typography>
                     <Stack direction='row' justifyContent='space-between'>
                       <Rating name='read-only' value={4} readOnly precision={0.5} />
-                      <Stack direction='column'>
+                      {/* <Stack direction='column'>
                         <Typography sx={style.pkr} component='div' variant='button'>
                           Starting at
                         </Typography>
                         <Typography component='div'>PKR {gig?.gig?.price}</Typography>
-                      </Stack>
+                      </Stack> */}
                     </Stack>
                   </BaseCard>
                 </Grid>

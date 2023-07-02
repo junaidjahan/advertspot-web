@@ -22,9 +22,10 @@ function GoogleMapComponent({ location }) {
   const [longitude, setLongitude] = useState(74.3585145221313);
   const [formattedAddress, setFormattedAddress] = useState();
   const [autocomplete, setAutocomplete] = useState();
-  const { isLoaded } = useLoadScript({
-    libraries: ['places']
-  });
+  // const { isLoaded } = useLoadScript({
+  //   googleMapsApiKey: 'AIzaSyBdhJi9U3ZnoB3auMMNBMFwK0JO1PwP0II',
+
+  // });
   const center = useMemo(() => ({ lat: 31.516818102253165, lng: 74.3585145221313 }), []);
   let geocoder = null;
 

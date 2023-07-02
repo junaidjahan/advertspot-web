@@ -100,7 +100,7 @@ export const GigDetails = () => {
               <Box>
                 <p>{gig.gig?.description}</p>
               </Box>
-              <hr style={style.hr} />
+              {/* <hr style={style.hr} />
               <Box className='d-flex mt-5'>
                 <Icon sx={style.icon}>sell</Icon> <p style={style.budget}> {gig.gig?.price} Rs.</p>
               </Box>
@@ -135,7 +135,7 @@ export const GigDetails = () => {
                 >
                   Place Order
                 </BaseButton>
-              </Box>
+              </Box> */}
             </Container>
           </Grid>
         </Grid>

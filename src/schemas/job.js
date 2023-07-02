@@ -5,7 +5,7 @@ export const jobSchema = z.object({
   Quantity: z.string().min(1, 'This field is required'),
   Budget: z.string().min(1, 'This field is required'),
   Description: z.string(),
-  Location: z.string().min(1, 'This field is required'),
+  Location: z.string(),
   Type: z.string().min(1, 'This field is required'),
   Delivery: z.string().min(1, 'This field is required'),
   Duration: z.string().min(1, 'This field is required'),

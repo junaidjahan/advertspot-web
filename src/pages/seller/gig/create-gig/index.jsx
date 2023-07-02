@@ -141,7 +141,7 @@ export const CreateGig = () => {
                   <BaseTextField required fullWidth label='Title' name='title' />
                 </Box>
               </Grid>
-              <Grid item xs={12} md={6}>
+              {/* <Grid item xs={12} md={6}>
                 <Box sx={style.textField}>
                   <BaseTextField
                     InputProps={{
@@ -154,19 +154,19 @@ export const CreateGig = () => {
                     name='price'
                   />
                 </Box>
-              </Grid>
+              </Grid> */}
 
-              <Grid item xs={12} md={6}>
+              {/* <Grid item xs={12} md={6}>
                 <Box sx={style.textField}>
                   <BaseTextField type='number' required fullWidth label='Quantity' name='quantity' />
                 </Box>
-              </Grid>
+              </Grid> */}
               <Grid item xs={12} md={6}>
                 <Box sx={style.textField}>
                   <BaseSelect fullWidth required={true} label='Type' options={jobType} name='category' />
                 </Box>
               </Grid>
-              <Grid item xs={12} md={6}>
+              {/* <Grid item xs={12} md={6}>
                 <Box sx={style.textField}>
                   <BaseTextField type='number' fullWidth label='Height' name='height' />
                 </Box>
@@ -195,7 +195,7 @@ export const CreateGig = () => {
                 <Box sx={style.textField}>
                   <BaseSelect fullWidth label='Duration' options={durationType} name='duration' />
                 </Box>
-              </Grid>
+              </Grid> */}
 
               <Grid item xs={12} md={12}>
                 <Box sx={style.textField}>

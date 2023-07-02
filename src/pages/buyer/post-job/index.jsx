@@ -7,6 +7,7 @@ import { useForm as useHookForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import { useLoader } from '~/hooks/use-loader';
 import GoogleMapComponent from '~/components/shared/google-maps';
+import { useNavigate } from 'react-router-dom';
 
 export const PostJob = () => {
   const jobSteps = ['1. Post a job to the marketplace', '2. Get proposals from talent', '4. Pay for work you approve'];
@@ -34,13 +35,15 @@ export const PostJob = () => {
   //   const { reset } = useHookForm({ defaultValues: { Title: '', Budget: '' } });
   const {
     formState: { isValid, isSubmitting },
-    reset
+    reset,
+    setValue
   } = form;
   const { open } = useSnackbar();
   const { openLoader, closeLoader } = useLoader();
   const { saveJob, getAllCities } = useJob();
   const [location, setLocation] = useState();
   const [cities, setCities] = useState([]);
+  const navigate = useNavigate()
 
   useEffect(() => {
     getAllCities().then(res => {
@@ -54,6 +57,7 @@ export const PostJob = () => {
     closeLoader();
     open('Job created successdfully!');
     reset();
+    navigate('/buyer/dashboard')
   };
 
   return (
@@ -159,13 +163,14 @@ export const PostJob = () => {
                     className='mb-30'
                     value={location}
                     focused={location}
-                    onChange={e => setLocation(e.target.value)}
+                    onChange={e =>{ setLocation(e.target.value), setValue('Location',e.target.value)}}
                     fullWidth
-                    required={true}
+                    required
+                    id='Location'
                     label='Location'
                     name='Location'
                   />
-                  <GoogleMapComponent location={setLocation} />
+                  <GoogleMapComponent location={(e)=>{ setLocation(e); setValue('Location',e)}} />
                 </Box>
               </Grid>
 
