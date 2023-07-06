@@ -58,6 +58,13 @@ export const SellerNavbar = () => {
       }
     },
     {
+      text: 'Profile',
+      icon: 'account_circle',
+      method: () => {
+        navigate('/seller/profile');
+      }
+    },
+    {
       text: 'Logout',
       icon: 'logout',
       method: logout

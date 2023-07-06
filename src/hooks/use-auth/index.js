@@ -4,7 +4,7 @@ import { authState, userState } from '~/state';
 import { useAxios } from '../use-axios';
 
 export const useAuth = () => {
-  const { post } = useAxios();
+  const { post, get } = useAxios();
   const navigate = useNavigate();
 
   const setAuth = useSetRecoilState(authState);
@@ -22,8 +22,14 @@ export const useAuth = () => {
   };
 
   const signup = async data => {
+
+    return await post('/auth/signup', data);
+
+  };
+
+  const updateUser = async (data) => {
     try {
-      await post('/auth/signup', data);
+      await post('/auth/update-profile', data);
     } catch {}
   };
 
@@ -38,6 +44,7 @@ export const useAuth = () => {
     login,
     signup,
     logout,
-    user
+    user,
+    updateUser
   };
 };

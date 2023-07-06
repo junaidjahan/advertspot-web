@@ -84,7 +84,7 @@ export const CreateProposal = () => {
                         <Typography variant='p' sx={style.dimesions}>
                           Dimensions:
                         </Typography>{' '}
-                        {job?.Dimensions}
+                        {job?.Height} <p style={style.by}>by</p> {job?.Width}
                       </Typography>
                     </Box>
                     <Box>
@@ -214,5 +214,10 @@ const style = {
   terms: {
     color: 'grey.main',
     mx: 2
-  }
+  },
+  by: {
+    color: '#9B57F2',
+    marginLeft: '8px',
+    marginRight: '8px'
+  },
 };

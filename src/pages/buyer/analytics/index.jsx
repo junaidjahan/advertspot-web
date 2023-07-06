@@ -65,7 +65,7 @@ export const BuyerAnalytics = () => {
           ANALYTICS
         </h1>
         <Box style={{ marginTop: '4.9rem', zIndex: 10, position: 'absolute' }}>
-          <BaseCard className='mt-20'>
+          <BaseCard className='mt-20 mb-20'>
             <Grid container direction='row'>
               <Grid className=' mt-30' xs={12} md={6} item>
                 <BaseCard variant='' style={{ backgroundColor: '#b892ff', color: 'white', width: 'max-content' }}>

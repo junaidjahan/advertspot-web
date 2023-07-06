@@ -51,7 +51,7 @@ export const ProposalDetails = () => {
               <h2 style={{ fontWeight: '500', fontSize: 18, color: 'grey' }}>
                 {proposal.user?.firstName} {proposal.user?.lastName}
               </h2>
-              <BaseButton variant='outlined' className='mt-10'>
+              <BaseButton  onClick={() => navigate(`/seller/messages/${proposal.user?._id}`, { replace: true })} variant='outlined' className='mt-10'>
                 {' '}
                 Message
               </BaseButton>

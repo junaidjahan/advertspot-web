@@ -15,10 +15,14 @@ export const Signup = () => {
   } = form;
 
   const handleSubmit = async values => {
-    await signup(values);
+    try{
+      await signup(values);
+      open('Signed up successfully!');
+      navigate('/auth/login');
+    } catch(e){
+      open(e, 'error')
+    }
 
-    open('Signed up successfully!');
-    navigate('/auth/login');
   };
 
   return (
@@ -42,7 +46,7 @@ export const Signup = () => {
                 <BaseTextField fullWidth label=' Email' name='email' />
               </Box>
               <Box sx={style.textField}>
-                <BaseTextField fullWidth label=' Phone Number' name='phoneNumber' />
+                <BaseTextField fullWidth label=' Phone Number' name='phone' />
               </Box>
               <Box sx={style.textField}>
                 <BaseTextField fullWidth label='Password' type='password' name='password' />

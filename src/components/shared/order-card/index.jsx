@@ -6,6 +6,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Rating,
   Typography
 } from '@mui/material';
 import { useState } from 'react';
@@ -18,12 +19,27 @@ import { useLoader } from '~/hooks/use-loader';
 export const OrderCard = ({ order, handleChange, ...props }) => {
   const [completeOrder, setCompleteOrder] = useState(false);
   const [closeOrder, setCancelOrder] = useState(false);
-  const { getAllBuyerOrders, changeStatus } = useOrder();
+  const [review, setReview] = useState(false);
+  const [rating, setRating] = useState({ service: null, communication: null, delivery: null });
+  const { changeStatus, createReview } = useOrder();
   const { openLoader, closeLoader } = useLoader();
   const { open } = useSnackbar();
 
+  const handleRating = (type, rate) => {
+    setRating((prev, curr) => {
+      return { ...prev, [type]: rate };
+    });
+  };
+
   const handleCompleteOpen = () => {
     setCompleteOrder(true);
+  };
+
+  const handleReviewOpen = () => {
+    setReview(true);
+  };
+  const handleReviewClose = () => {
+    setReview(false);
   };
 
   const handleCompleteOrder = async (id, status) => {
@@ -35,6 +51,16 @@ export const OrderCard = ({ order, handleChange, ...props }) => {
     if (order) {
       open(`Order ${toTitleCase(status)} successfully!`);
     }
+    handleChange();
+  };
+
+  const handleReview = async order => {
+    openLoader();
+    const review = await createReview({ ...rating, orderId: order.id });
+    closeLoader();
+    setReview(false);
+    open('Reviewed successfully!');
+    setRating({ service: null, communication: null, delivery: null });
     handleChange();
   };
 
@@ -87,12 +113,117 @@ export const OrderCard = ({ order, handleChange, ...props }) => {
                   Amount: {order?.amount} Pkr
                 </p>
               </Box>
+              <Box>
+                {order?.sellerName ? (
+                  <p style={style.budget} className='d-flex'>
+                    Seller: {order?.sellerName}
+                  </p>
+                ) : (
+                  <></>
+                )}
+              </Box>
+            </Box>
+            <Box>
               {order?.userType === USER_TYPE.SELLER ||
               [ORDER_STATUS.CANCELLED, ORDER_STATUS.COMPLETED].includes(order?.status) ? (
-                <></>
+                <>
+                  {order.reviewed == false ? (
+                    <Box>
+                      <Box className='d-flex mt-10' style={{ justifyContent: 'end' }}>
+                        <BaseButton variant='contained' size='small' onClick={handleReviewOpen}>
+                          Review
+                        </BaseButton>
+                      </Box>
+                      <Dialog
+                        open={review}
+                        onClose={handleClose}
+                        aria-labelledby='alert-dialog-title'
+                        aria-describedby='alert-dialog-description'
+                      >
+                        <DialogTitle id='alert-dialog-title'>{'Review'}</DialogTitle>
+                        <DialogContent>
+                          <div>
+                            <p style={{ fontWeight: '500' }}>How would you rate this seller?</p>
+                          </div>
+                          <div style={style.ratingCard}>
+                            <div style={style.ratingBox}>
+                              <h4 style={{ color: '#9B57F2' }}>Service</h4>
+                              <Rating
+                                name='service'
+                                value={rating.service}
+                                size='large'
+                                onChange={(event, newVal) => {
+                                  handleRating('service', newVal);
+                                }}
+                                precision={0.5}
+                                style={{ display: 'flex' }}
+                              />
+                            </div>
+
+                            <div style={style.ratingBox}>
+                              <h4 style={{ color: '#9B57F2' }}>Communication</h4>
+                              <Rating
+                                name='communication'
+                                value={rating.communication}
+                                onChange={(event, newVal) => {
+                                  handleRating('communication', newVal);
+                                }}
+                                precision={0.5}
+                                size='large'
+                                style={{ display: 'flex' }}
+                              />
+                            </div>
+                            <div style={style.ratingBox}>
+                              <h4 style={{ color: '#9B57F2' }}>Delivery</h4>
+                              <Rating
+                                name='delivery'
+                                value={rating.delivery}
+                                size='large'
+                                onChange={(event, newVal) => {
+                                  handleRating('delivery', newVal);
+                                }}
+                                precision={0.5}
+                                style={{ display: 'flex' }}
+                              />
+                            </div>
+                          </div>
+                        </DialogContent>
+                        <DialogActions>
+                          <BaseButton
+                            onClick={() => {
+                              handleReviewClose();
+                            }}
+                            variant='outlined'
+                            size='small'
+                          >
+                            Cancel
+                          </BaseButton>
+                          <BaseButton
+                            onClick={() => {
+                              handleReview(order);
+                            }}
+                            variant='contained'
+                            autoFocus
+                            size='small'
+                          >
+                            Submit
+                          </BaseButton>
+                        </DialogActions>
+                      </Dialog>
+                    </Box>
+                  ) : (
+                    <> </>
+                  )}
+                </>
               ) : (
-                <Box className='d-flex'>
-                  <BaseButton color='error' className='mr-10' size='small' onClick={handleCancelOpen} variant='outlined'>
+                <Box className='d-flex mt-10' style={{ justifyContent: 'end' }}>
+                  <BaseButton
+                    color='error'
+                    className='mr-10'
+                    size='small'
+                    onClick={handleCancelOpen}
+                    variant='outlined'
+                  >
                     Cancel
                   </BaseButton>
                   <BaseButton onClick={handleCompleteOpen} variant='contained'>
@@ -189,7 +320,18 @@ const style = {
     backgroundColor: 'grey',
     ml: 1
   },
-
+  ratingCard: {
+    width: '400px',
+    backgroundColor: '#ebebeb',
+    borderRadius: '10px',
+    padding: '10px',
+    marginTop: '10px'
+  },
+  ratingBox: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    marginTop: '5px'
+  },
   budget: {
     fontSize: 14,
     fontStyle: 'italic',

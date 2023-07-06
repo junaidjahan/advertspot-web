@@ -71,7 +71,7 @@ export const CreateGig = () => {
         form.setValue('images', imagesUrl);
         const data = { ...form.getValues() };
         await saveGig(data);
-        open('Gig created succesfully!');
+        open('Ad created succesfully!');
         closeLoader();
         reset();
         removeImages();

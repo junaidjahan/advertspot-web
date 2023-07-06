@@ -58,6 +58,13 @@ export const BuyerNavbar = () => {
       }
     },
     {
+      text: 'Profile',
+      icon: 'account_circle',
+      method: () => {
+        navigate('/buyer/profile');
+      }
+    },
+    {
       text: 'Logout',
       icon: 'logout',
       method: logout

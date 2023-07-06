@@ -2,8 +2,6 @@ import { Box, Container, Grid, Icon, InputAdornment } from '@mui/material';
 import { BaseButton, BaseCard, BaseForm, BaseSelect, BaseTextField } from '~/components';
 import { useForm, useJob, useSnackbar } from '~/hooks';
 import { jobSchema } from '~/schemas';
-import { userState } from '~/state';
-import { useForm as useHookForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import { useLoader } from '~/hooks/use-loader';
 import GoogleMapComponent from '~/components/shared/google-maps';
@@ -14,6 +12,7 @@ export const PostJob = () => {
   const jobType = [
     { value: 'flex', label: 'Flex' },
     { value: 'banner', label: 'Banner' },
+    { value: 'billboard', label: 'Billboard' },
     { value: 'brochure', label: 'Brochure' },
     { value: 'digital-marketing', label: 'Digital Marketing' },
     { value: 'poster', label: 'Poster' },

@@ -10,7 +10,7 @@ export const signupSchema = z
       .min(8, 'Password must be at-teast 8 characters long')
       .max(36, 'Password must not be greater than 36 characters'),
     confirmPassword: z.string(),
-    phoneNumber: z.string(),
+    phone: z.string(),
     userType: z.string()
   })
   .refine(

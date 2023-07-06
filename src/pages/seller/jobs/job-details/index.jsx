@@ -36,7 +36,7 @@ export const JobDetails = ({ jobId }) => {
   }, [jobId ? jobId : id]);
 
   return (
-    <Container maxWidth='md'>
+    <Container maxWidth='md' className='pb-10'>
       {!jobId ? (
         <Box>
           <Box className='mt-25'>

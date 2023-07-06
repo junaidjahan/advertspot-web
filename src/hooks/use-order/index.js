@@ -210,6 +210,12 @@ export const useOrder = () => {
     }
   };
 
+  const createReview = async reviewData => {
+    try{
+      return await post('/order/review', reviewData)
+    }catch{}
+  }
+
   const getAllBuyerOrders = async () => {
     {
       try {
@@ -275,6 +281,7 @@ export const useOrder = () => {
     earningsAndSpendings,
     mapLineChartData,
     mapCustomGauge,
-    totalAmount
+    totalAmount,
+    createReview
   };
 };

@@ -28,6 +28,7 @@ export const Home = () => {
   const category = [
     { value: 'flex', label: 'Flex' },
     { value: 'banner', label: 'Banner' },
+    { value: 'billboard', label: 'Billboard' },
     { value: 'brochure', label: 'Brochure' },
     { value: 'digital-marketing', label: 'Digital Marketing' },
     { value: 'poster', label: 'Poster' },
@@ -171,7 +172,7 @@ export const Home = () => {
                     {gig?.gig?.title}
                   </Typography>
                   <Stack direction='row' justifyContent='space-between'>
-                    <Rating name='read-only' value={4} readOnly precision={0.5} />
+                    <Rating name='read-only' value={gig?.user.rating.overallRating} readOnly precision={0.5} />
                     {/* <Stack direction='column'>
                       <Typography sx={style.pkr} component='div' variant='button'>
                         Starting at

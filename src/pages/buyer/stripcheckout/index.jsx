@@ -1,7 +1,7 @@
 import { PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import { useNavigate } from 'react-router-dom';
 import { BaseButton } from '~/components';
-import { useOrder } from '~/hooks';
+import { useOrder, useSnackbar } from '~/hooks';
 import { useLoader } from '~/hooks/use-loader';
 
 const StripCheckoutForm = ({ order }) => {
@@ -10,10 +10,17 @@ const StripCheckoutForm = ({ order }) => {
   const { saveOrder } = useOrder();
   const { openLoader, closeLoader } = useLoader();
   const navigate = useNavigate();
+  const { open } = useSnackbar();
 
   const createOrder = async () => {
     openLoader();
-    await saveOrder(order);
+    try{
+      await saveOrder(order);
+      open('Order placed successfully!')
+    }catch{
+      open("Something went wrong!")
+    }
+
     closeLoader();
     navigate('/buyer/dashboard');
   };

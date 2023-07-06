@@ -77,10 +77,8 @@ export const SellerAnalytics = () => {
           ANALYTICS
         </h1>
         <Box style={{ marginTop: '4.9rem', zIndex: 10, position: 'absolute' }}>
-          <BaseCard className='mt-20'>
-            <Grid container direction='row'>
-              {/* <Grid className='mt-30' style={{ height: '20rem' }} md={6} xs={12} item>
-                <BaseCard
+          <BaseCard className='mt-20 mb-20'>
+          <BaseCard
                   variant=''
                   className='pt-10'
                   style={{ backgroundColor: '#b892ff', color: 'white', width: 'max-content' }}
@@ -91,11 +89,14 @@ export const SellerAnalytics = () => {
                   <BaseCard
                     variant=''
                     className='app-shadow center-row'
-                    style={{ width: '70%', height: '50%', fontWeight: '700', fontSize: '45px', color: 'rgb(0,50,190)' }}
+                    style={{ width: '70%', height: '300px', fontWeight: '700', fontSize: '45px', color: 'rgb(0,50,190)' }}
                   >
                     {totalEarning} Pkr
                   </BaseCard>
                 </Box>
+            <Grid container direction='row'>
+              {/* <Grid className='mt-30' style={{ height: '20rem' }} md={12} xs={12} item>
+               
               </Grid> */}
               <Grid xs={12} md={6} item className='mt-35'>
                 <BaseCard
